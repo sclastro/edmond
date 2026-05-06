@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSE ICT Core A — Band 1 Revision Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f7f4ef;
+    --accent: #b5222e;
+    --accent-light: #f5e6e7;
+    --rule: #d1cbc2;
+    --muted: #6b6560;
+    --code-bg: #1e1e2e;
+    --code-fg: #cdd6f4;
+    --so-what: #1a3a2a;
+    --so-what-bg: #eef5f1;
+    --warn: #7a4800;
+    --warn-bg: #fdf3e3;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--ink);
+    color: #fff;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    border-bottom: 3px solid var(--accent);
+  }
+  nav a {
+    color: #ccc;
+    text-decoration: none;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.85rem 1rem;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  nav a:hover { color: #fff; border-color: var(--accent); }
+  nav .brand {
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.85rem 1.5rem 0.85rem 0;
+    margin-right: 1rem;
+    border-right: 1px solid #444;
+    white-space: nowrap;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    border-bottom: 1px solid var(--rule);
+    padding: 4rem 2rem 3rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .hero-tag::after { content: ''; flex: 1; height: 1px; background: var(--accent); max-width: 60px; }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--muted);
+    font-style: italic;
+    max-width: 600px;
+  }
+  .priority-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 2.5rem;
+  }
+  .priority-card {
+    background: var(--paper);
+    padding: 1.25rem 1.5rem;
+  }
+  .priority-card .label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+  .priority-card.high .label { color: var(--accent); }
+  .priority-card.med .label { color: #7a4800; }
+  .priority-card.low .label { color: var(--so-what); }
+  .priority-card .topics {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+  }
+  .priority-card .focus {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── LAYOUT ── */
+  .content { max-width: 860px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* ── SECTIONS ── */
+  section { padding: 3.5rem 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type { border-bottom: none; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.5rem;
+    border: 1.5px solid var(--accent);
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  h2 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--rule);
+  }
+  p { margin-bottom: 1rem; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── CALLOUT BOXES ── */
+  .so-what {
+    background: var(--so-what-bg);
+    border-left: 3px solid var(--so-what);
+    border-radius: 0 4px 4px 0;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    font-size: 0.95rem;
+  }
+  .so-what strong {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--so-what);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .trap {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn);
+    border-radius: 0 4px 4px 0;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    font-size: 0.95rem;
+  }
+  .trap strong {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--warn);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  thead tr {
+    background: var(--ink);
+    color: #fff;
+  }
+  thead th {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  tbody tr { border-bottom: 1px solid var(--rule); }
+  tbody tr:nth-child(even) { background: rgba(0,0,0,0.025); }
+  tbody td {
+    padding: 0.7rem 1rem;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tbody td:first-child { font-weight: 600; }
+  .tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+  }
+  .tag-val { background: #dbeafe; color: #1e40af; }
+  .tag-ver { background: #dcfce7; color: #166534; }
+
+  /* ── CODE ── */
+  pre, code {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  code {
+    background: #e8e4de;
+    color: var(--ink);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    font-size: 0.85em;
+  }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    padding: 1.25rem 1.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+  .kw { color: #cba6f7; }
+  .str { color: #a6e3a1; }
+  .num { color: #fab387; }
+  .cm { color: #6c7086; font-style: italic; }
+  .fn { color: #89b4fa; }
+
+  /* ── STEPS ── */
+  .steps { counter-reset: step; list-style: none; padding: 0; }
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    align-items: flex-start;
+  }
+  .steps li::before {
+    content: counter(step);
+    flex-shrink: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.15rem;
+  }
+
+  /* ── FLOW BAR ── */
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 1.5rem 0;
+    border: 1px solid var(--rule);
+  }
+  .flow-item {
+    flex: 1;
+    min-width: 90px;
+    padding: 0.6rem 0.5rem;
+    text-align: center;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    background: var(--paper);
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .flow-item:last-child { border-right: none; }
+  .flow-item.highlight { background: var(--ink); color: #fff; }
+  .flow-num {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+  }
+  .flow-item.highlight .flow-num { color: #aaa; }
+
+  /* ── PKI ── */
+  .pki-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
+  @media (max-width: 600px) { .pki-grid { grid-template-columns: 1fr; } }
+  .pki-card {
+    border: 1px solid var(--rule);
+    padding: 1.25rem;
+    border-radius: 4px;
+  }
+  .pki-card h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .pki-card p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+  /* ── TRACE TABLE ── */
+  .trace-table { margin: 1rem 0; }
+  .trace-table table { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; }
+
+  /* ── CLOSING ── */
+  .closing {
+    background: var(--ink);
+    color: #fff;
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+    text-align: center;
+  }
+  .closing h3 {
+    font-size: 1.3rem;
+    border-bottom: none;
+    margin: 0 0 0.75rem;
+    color: #fff;
+  }
+  .closing p { color: #bbb; max-width: 620px; margin: 0 auto; font-style: italic; }
+  .closing .badge {
+    display: inline-block;
+    margin-top: 1.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+  }
+
+  /* ── ANIMATIONS ── */
+  section { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  section.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    nav a { font-size: 0.65rem; padding: 0.75rem 0.65rem; }
+    .hero { padding: 2.5rem 1.25rem 2rem; }
+    .content { padding: 0 1.25rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">DSE ICT Core A</div>
+  <a href="#s1">Intro</a>
+  <a href="#s2">Info Processing</a>
+  <a href="#s3">Data Repr.</a>
+  <a href="#s4">Hardware</a>
+  <a href="#s5">Internet</a>
+  <a href="#s6">Database</a>
+  <a href="#s7">Programming</a>
+  <a href="#s8">Ethics</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Band 1 Special Edition</div>
+  <h1>Ultimate High-Velocity<br><span>Revision Guide</span></h1>
+  <p>Strategic consolidation for DSE ICT Paper 1A &amp; 1B — designed to elevate your responses to Level 5★★ quality.</p>
+
+  <div class="priority-grid">
+    <div class="priority-card high">
+      <div class="label">★ High Frequency / High Mark</div>
+      <div class="topics">Algorithms, Spreadsheet Formulas, SQL Queries</div>
+      <div class="focus">Mastery of syntax, logic, and dry-run precision.</div>
+    </div>
+    <div class="priority-card med">
+      <div class="label">★ Technical Precision</div>
+      <div class="topics">Two's Complement, PKI, Bandwidth Calculations</div>
+      <div class="focus">Absolute accuracy in unit conversion (Binary vs. Decimal).</div>
+    </div>
+    <div class="priority-card low">
+      <div class="label">★ Conceptual Evaluation</div>
+      <div class="topics">Social Implications, AI Training, Hardware Comparisons</div>
+      <div class="focus">The "So What?" layer: explaining impacts and justifications.</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- SECTION 1 -->
+  <section id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Strategic Mastery of Core A</h2>
+    </div>
+    <p>Core A is not merely the first chapter of the syllabus — it is the foundational bedrock of the entire exam. Historically, Core A topics contribute the highest volume of marks across both Paper 1A and Paper 1B.</p>
+    <p>For a Band 1 candidate, mastering this section creates a "safety net" of marks, allowing you to approach the elective modules with the psychological advantage of a strong baseline. This guide is designed to refine your technical accuracy and elevate your evaluative responses from standard to Level 5★★ quality.</p>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Information Processing</h2>
+    </div>
+    <p>Understanding the <strong>Data → Information → Knowledge</strong> hierarchy is essential for answering high-order evaluation questions:</p>
+    <p><strong>Data</strong> — unorganised raw facts. <strong>Information</strong> — data processed into context. <strong>Knowledge</strong> — analytical application of information to identify trends or make informed judgements.</p>
+
+    <h3>Data Validation vs. Data Verification</h3>
+    <p>To combat <strong>Garbage In, Garbage Out (GIGO)</strong>: validation ensures data is <em>sensible</em>; verification ensures it is <em>correct against the source</em>.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Method</th><th>Type</th><th>Specific Role</th><th>Role in Reducing GIGO</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Presence Check</td><td><span class="tag tag-val">Validation</span></td><td>Ensures required fields are not left blank.</td><td>Prevents critical missing records (e.g., Student Name).</td></tr>
+          <tr><td>Range Check</td><td><span class="tag tag-val">Validation</span></td><td>Ensures data falls within logical boundaries.</td><td>Prevents impossible entries (e.g., Age &gt; 120).</td></tr>
+          <tr><td>Format Check</td><td><span class="tag tag-val">Validation</span></td><td>Ensures data follows a specific pattern.</td><td>Detects structural errors (e.g., missing "@" in email).</td></tr>
+          <tr><td>Check Digit</td><td><span class="tag tag-val">Validation</span></td><td>Uses an algorithm to verify digits.</td><td>Detects transcription or transposition errors in IDs.</td></tr>
+          <tr><td>Double Entry</td><td><span class="tag tag-ver">Verification</span></td><td>Requires entering the same data twice.</td><td>Reduces human typing errors (e.g., new passwords).</td></tr>
+          <tr><td>Proofreading</td><td><span class="tag tag-ver">Verification</span></td><td>Human comparison against source documents.</td><td>Catches subtle errors that algorithms might miss.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The 7-Stage Flow of Information Processing</h3>
+    <div class="flow">
+      <div class="flow-item"><span class="flow-num">1</span>Collection</div>
+      <div class="flow-item"><span class="flow-num">2</span>Organisation</div>
+      <div class="flow-item highlight"><span class="flow-num">3</span>Analysis</div>
+      <div class="flow-item"><span class="flow-num">4</span>Storage</div>
+      <div class="flow-item"><span class="flow-num">5</span>Processing</div>
+      <div class="flow-item"><span class="flow-num">6</span>Transmission</div>
+      <div class="flow-item"><span class="flow-num">7</span>Presentation</div>
+    </div>
+    <div class="so-what">
+      <strong>So What? — The Analysis Stage</strong>
+      A simple database stores and processes data, but an advanced information system is differentiated by the <em>Analysis</em> stage. Using tools like Pivot Tables or "What-if" scenarios to identify trends turns static records into a strategic asset for decision-making.
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Data Representation</h2>
+    </div>
+    <p>Binary and hexadecimal systems form the language of hardware communication and memory addressing. Hexadecimal is valued for representing large binary strings (like MAC addresses) concisely.</p>
+
+    <h3>Two's Complement Representation</h3>
+    <p>To represent negative integers in a fixed-bit system:</p>
+    <ol class="steps">
+      <li><strong>Start with the positive binary.</strong> Example: for −3 in 8-bit → <code>00000011</code></li>
+      <li><strong>Invert all bits.</strong> → <code>11111100</code></li>
+      <li><strong>Add 1.</strong> → <code>11111101</code> ✓</li>
+    </ol>
+    <div class="so-what">
+      <strong>So What? — Overflow Errors</strong>
+      An overflow error occurs when a calculation result exceeds the maximum range of the bit-system, causing the sign bit to flip incorrectly. This leads to critical software crashes or logic corruption because the computer cannot "fit" the result into the allocated memory.
+    </div>
+
+    <h3>Character Encoding Comparison</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Encoding</th><th>Language Scope</th><th>Storage Impact</th><th>Compatibility Impact</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ASCII</td><td>English / Western</td><td>7 bits to 1 byte per char.</td><td>Global standard; lacks non-Western support.</td></tr>
+          <tr><td>Big-5 / GB</td><td>Trad. / Simp. Chinese</td><td>2 bytes per character.</td><td>Essential for local markets; prone to "garbled" text.</td></tr>
+          <tr><td>Unicode</td><td>Universal</td><td>1 to 4 bytes per character.</td><td>Large overhead but ensures universal compatibility.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Computer System Fundamentals</h2>
+    </div>
+    <p>The <strong>Fetch-Decode-Execute (FDE) cycle</strong> is the heartbeat of machine organisation. The CPU fetches instructions from RAM, decodes the machine code, and executes the task — repeating this billions of times per second (Clock Rate).</p>
+
+    <h3>Device Evaluation: Desktop vs. Smartphone</h3>
+    <div class="pki-grid">
+      <div class="pki-card">
+        <h4>Device A — Desktop</h4>
+        <p>Features a <strong>standalone display card (dedicated GPU)</strong>.</p>
+        <div class="so-what" style="margin-top:0.5rem">
+          <strong>So What?</strong>
+          A dedicated GPU provides superior graphical performance for rendering 4K video or high-end simulations by offloading math-heavy tasks from the CPU.
+        </div>
+      </div>
+      <div class="pki-card">
+        <h4>Device B — Smartphone</h4>
+        <p>Prioritises <strong>Flash memory</strong> and integrated units.</p>
+        <div class="so-what" style="margin-top:0.5rem">
+          <strong>So What?</strong>
+          Flash memory offers higher data transfer rates and lower power consumption, critical for extending battery life and portability.
+        </div>
+      </div>
+    </div>
+
+    <h3>Hardware Improvements &amp; The Software Link</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Component</th><th>Improvement</th><th>Impact</th></tr></thead>
+        <tbody>
+          <tr><td>RAM Capacity</td><td>Larger capacity</td><td>More applications reside in memory simultaneously, reducing slow virtual memory swaps.</td></tr>
+          <tr><td>CPU Clock Rate</td><td>Higher rate</td><td>More FDE cycles per second, directly increasing system throughput.</td></tr>
+          <tr><td>Driver Programs</td><td>Latest version</td><td>Not just for speed — specifically fixes bugs and ensures compatibility with newer OS updates.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Internet &amp; Cybersecurity</h2>
+    </div>
+    <p>As we shift from <strong>IPv4</strong> (32-bit) to <strong>IPv6</strong> (128-bit) to accommodate the Internet of Things (IoT), technical precision in bandwidth and security is the key differentiator for Band 1 students.</p>
+
+    <h3>Bandwidth Calculation — Binary Precision</h3>
+    <div class="trap">
+      <strong>⚠ Common Trap</strong>
+      Avoid the 8-bit = 1-byte shortcut with decimal 1000. For Band 1 precision, use <em>binary units (×1024)</em> for file sizes when requested or implied.
+    </div>
+    <p><strong>Scenario:</strong> Uploading 200 photos (5 MB each) at 100 Mbps.</p>
+    <ol class="steps">
+      <li><strong>Total Size in Bits:</strong> 200 × 5 MB × 1024 (KB) × 1024 (B) × 8 = <strong>8,388,608,000 bits</strong></li>
+      <li><strong>Shortest Time:</strong> 8,388,608,000 ÷ 100,000,000 bps = <strong>83.9 seconds</strong> (3 sig. fig.)</li>
+    </ol>
+    <p style="font-style:italic;font-size:0.9rem;color:var(--muted)">Note: Using the decimal method (80s) may lose marks if the marker expects binary conversion for storage units.</p>
+
+    <h3>Public Key Infrastructure (PKI): Dual Mechanisms</h3>
+    <div class="pki-grid">
+      <div class="pki-card">
+        <h4>1 — Confidentiality</h4>
+        <p>Eva uses <strong>Paul's Public Key</strong> to encrypt. Only <strong>Paul's Private Key</strong> can decrypt.</p>
+        <div class="so-what" style="margin-top:0.5rem">
+          <strong>So What?</strong>
+          Even if intercepted, the file is unreadable to anyone but Paul.
+        </div>
+      </div>
+      <div class="pki-card">
+        <h4>2 — Authentication / Non-Repudiation</h4>
+        <p>Eva uses <strong>her own Private Key</strong> to "sign" the file. Paul uses <strong>Eva's Public Key</strong> to verify.</p>
+        <div class="so-what" style="margin-top:0.5rem">
+          <strong>So What?</strong>
+          This proves the file definitely came from Eva and was not altered in transit.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>Database Management</h2>
+    </div>
+    <p>Relational databases rely on <strong>Data Integrity</strong> to maintain reliability:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Integrity Type</th><th>Rule</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Entity Integrity</td><td>Unique Primary Keys — no duplicates.</td><td>Each student record has a unique Student ID.</td></tr>
+          <tr><td>Referential Integrity</td><td>Foreign Keys must match existing Primary Keys.</td><td>An order cannot reference a non-existent customer ID.</td></tr>
+          <tr><td>Domain Integrity</td><td>Data must match defined types/logic.</td><td>Check-in date cannot be after check-out date in a hotel system.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Master SQL Reference (Table: SS)</h3>
+    <p><strong>Basic Extraction:</strong></p>
+    <pre><code><span class="kw">SELECT</span> CL, CNO <span class="kw">FROM</span> SS
+<span class="kw">WHERE</span> SER = <span class="str">'Flag selling'</span>
+  <span class="kw">AND</span> CL <span class="kw">LIKE</span> <span class="str">'2_'</span>   <span class="cm">-- '_' = exactly one character; '%' = any number</span></code></pre>
+    <p><strong>Aggregation:</strong></p>
+    <pre><code><span class="kw">SELECT</span> CL, <span class="fn">SUM</span>(HR)
+<span class="kw">FROM</span> SS
+<span class="kw">GROUP BY</span> CL   <span class="cm">-- Fields NOT in an aggregate function MUST be in GROUP BY</span></code></pre>
+
+    <h3>Form vs. Report</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Database Object</th><th>Primary Purpose</th><th>Key Features</th></tr></thead>
+        <tbody>
+          <tr><td>Form</td><td>User-Friendly Data Entry</td><td>Shows one record at a time; dropdown lists for fixed-value validation; prevents input errors.</td></tr>
+          <tr><td>Report</td><td>Synthesised Data Output</td><td>Summarises large volumes of records into a professional layout for printing or executive summary.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section id="s7">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>Computational Thinking &amp; Programming</h2>
+    </div>
+    <p>Computational Thinking rests on three pillars: <strong>Abstraction</strong> (ignoring the irrelevant), <strong>Algorithmic Thinking</strong> (the step-by-step logic), and <strong>Automation</strong> (the code).</p>
+
+    <h3>Dry Run Guide: The "Index Trap"</h3>
+    <div class="trap">
+      <strong>⚠ Exam Trap</strong>
+      In Python, <code>range(0, 5)</code> includes 0 but <em>excludes</em> 5 → indices 0, 1, 2, 3, 4 only.
+    </div>
+    <p>Example — reversing an array:</p>
+    <pre><code><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">0</span>, <span class="num">5</span>):
+    s2[<span class="num">4</span>-i] = s1[i]</code></pre>
+    <div class="trace-table">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>i</th><th>Operation</th><th>Value assigned</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>s2[4] = s1[0]</td><td>'S'</td></tr>
+            <tr><td>1</td><td>s2[3] = s1[1]</td><td>'T'</td></tr>
+            <tr><td>2</td><td>s2[2] = s1[2]</td><td>'E'</td></tr>
+            <tr><td>3</td><td>s2[1] = s1[3]</td><td>'A'</td></tr>
+            <tr><td>4</td><td>s2[0] = s1[4]</td><td>'M'</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p><strong>Result:</strong> s2 = <code>['M', 'A', 'E', 'T', 'S']</code></p>
+
+    <h3>Check Digit Validation: Username '4B115'</h3>
+    <p>Algorithm: <strong>S = F + N</strong> (Form + Number). If Class is 'B', then <strong>S = S × 3</strong>. Check Digit D = S mod 10.</p>
+    <ol class="steps">
+      <li>F = 4, N = 11 → S = 4 + 11 = <strong>15</strong></li>
+      <li>Class is 'B' → S = 15 × 3 = <strong>45</strong></li>
+      <li>D = 45 mod 10 = <strong>5</strong></li>
+    </ol>
+    <div class="so-what">
+      <strong>Result</strong>
+      Username is <strong>Valid</strong> — the check digit 5 matches D. This logic detects transcription errors like typing '4A' instead of '4B'.
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section id="s8">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2>Social Implications &amp; Ethics</h2>
+    </div>
+    <p>Technology brings benefits (e.g., AI fire detection using "real" and "non-fire" samples to reduce false positives) but also legal and security liabilities.</p>
+
+    <h3>Software Licensing &amp; Security</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>License Type</th><th>Definition</th><th>"So What?" — Impact / Security Layer</th></tr></thead>
+        <tbody>
+          <tr><td>Freeware</td><td>Free to use; copyright retained.</td><td><strong>Security Trap:</strong> May collect personal data or require excessive permissions to "pay" for the service.</td></tr>
+          <tr><td>Shareware</td><td>Trial period, then pay.</td><td><strong>Legal Risk:</strong> School faces liability if used past the trial period.</td></tr>
+          <tr><td>Open Source</td><td>Source code is public.</td><td><strong>Flexibility:</strong> Can be customised, but requires expertise to audit for security vulnerabilities.</td></tr>
+          <tr><td>Copyrighted</td><td>Full legal restriction.</td><td><strong>Reliability:</strong> High cost, but includes official support and vetted security updates.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Professional ICT Practice: Health &amp; Ergonomics</h3>
+    <p>Professional practice requires addressing <strong>Repetitive Strain Injury (RSI)</strong>. Ergonomic solutions — adjustable chairs, wrist rests, and user-friendly GUI design — are not mere comforts. They are essential measures to maintain productivity and fulfil the duty of care in an ICT environment.</p>
+  </section>
+
+</div>
+
+<div class="closing">
+  <h3>A Note for the Band 1 Student</h3>
+  <p>Mastery of ICT is not about memorising definitions — it is about applying logic to solve real-world problems. Precision in your bandwidth calculations, clarity in your SQL, and depth in your ethical evaluations are what distinguish a Level 5★★ candidate. Execute your dry runs with care, watch for index traps, and approach the exam with the strategic mindset of a Lead Architect.</p>
+  <div class="badge">Good Luck — You've Got This</div>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
