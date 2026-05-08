@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSE ICT 高效溫習指南 — 必修部分 A、B &amp; C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f7f4ef;
+    --accent: #b5222e;
+    --rule: #d1cbc2;
+    --muted: #6b6560;
+    --code-bg: #1e1e2e;
+    --code-fg: #cdd6f4;
+    --so-what: #1a3a2a;
+    --so-what-bg: #eef5f1;
+    --warn: #7a4800;
+    --warn-bg: #fdf3e3;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--paper); color: var(--ink); font-family: 'EB Garamond', Georgia, serif; font-size: 18px; line-height: 1.8; }
+
+  /* ── TOP BAR (language + core selector) ── */
+  .top-bar {
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  /* Core tabs */
+  .core-tabs {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .core-tab {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.9rem 1.6rem;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .core-tab:hover { color: rgba(255,255,255,0.85); }
+  .core-tab.active {
+    color: #fff;
+    border-bottom-color: var(--accent);
+    background: rgba(255,255,255,0.05);
+  }
+  .core-tab .badge {
+    display: inline-block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+    letter-spacing: 0.04em;
+  }
+  .core-tab.active .badge { background: var(--accent); color: #fff; }
+  .core-tab:not(.active) .badge { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); }
+
+  /* Language buttons */
+  .lang-group {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.55rem 0;
+  }
+  .lang-label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.05em;
+    margin-right: 0.25rem;
+  }
+  .lang-btn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 0.22rem 0.65rem;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 2px;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lang-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .lang-btn:hover:not(.active) { border-color: rgba(255,255,255,0.7); color: rgba(255,255,255,0.85); }
+
+  /* ── LANGUAGE VISIBILITY ── */
+  .zh { display: block; }
+  .en { display: none; }
+  body.show-en .zh { display: none; }
+  body.show-en .en { display: block; }
+  span.zh { display: inline; }
+  span.en { display: none; }
+  body.show-en span.zh { display: none; }
+  body.show-en span.en { display: inline; }
+
+  /* ── CORE PANEL VISIBILITY ── */
+  .core-panel { display: none; }
+  .core-panel.active { display: block; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(26,26,26,0.97);
+    backdrop-filter: blur(6px);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    border-bottom: 2px solid var(--accent);
+  }
+  nav a {
+    color: #aaa;
+    text-decoration: none;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.8rem 0.85rem;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  nav a:hover { color: #fff; border-color: var(--accent); }
+  .nav-brand {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.8rem 1.1rem 0.8rem 0;
+    margin-right: 0.5rem;
+    border-right: 1px solid #333;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  /* Nav is per-panel — hide inactive nav */
+  .nav-core-a, .nav-core-b, .nav-core-c { display: none; }
+  body.core-a .nav-core-a { display: contents; }
+  body.core-b .nav-core-b { display: contents; }
+  body.core-c .nav-core-c { display: contents; }
+
+  /* ── HERO ── */
+  .hero { border-bottom: 1px solid var(--rule); padding: 3.5rem 2rem 2.5rem; max-width: 860px; margin: 0 auto; }
+  .hero-tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.6rem; }
+  .hero-tag::after { content: ''; height: 1px; background: var(--accent); width: 50px; }
+  .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 0.9rem; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { font-size: 1rem; color: var(--muted); font-style: italic; max-width: 580px; }
+  .priority-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 2rem; }
+  .priority-card { background: var(--paper); padding: 1.1rem 1.3rem; }
+  .priority-card .label { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+  .priority-card.high .label { color: var(--accent); }
+  .priority-card.med .label { color: #7a4800; }
+  .priority-card.low .label { color: var(--so-what); }
+  .priority-card .topics { font-weight: 600; font-size: 0.92rem; margin-bottom: 0.3rem; }
+  .priority-card .focus { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+
+  /* ── LAYOUT ── */
+  .content { max-width: 860px; margin: 0 auto; padding: 0 2rem 6rem; }
+  section { padding: 3.5rem 0; border-bottom: 1px solid var(--rule); opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  section:last-of-type { border-bottom: none; }
+  section.visible { opacity: 1; transform: none; }
+  .section-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.75rem; }
+  .section-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; padding: 0.2rem 0.5rem; border: 1.5px solid var(--accent); border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
+  h2 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; }
+  h3 { font-size: 1.05rem; font-weight: 600; margin: 2rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1.5px solid var(--rule); }
+  p { margin-bottom: 1rem; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── CALLOUTS ── */
+  .so-what { background: var(--so-what-bg); border-left: 3px solid var(--so-what); border-radius: 0 4px 4px 0; padding: 1rem 1.25rem; margin: 1.25rem 0; font-size: 0.95rem; }
+  .so-what strong { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--so-what); display: block; margin-bottom: 0.35rem; }
+  .trap { background: var(--warn-bg); border-left: 3px solid var(--warn); border-radius: 0 4px 4px 0; padding: 1rem 1.25rem; margin: 1.25rem 0; font-size: 0.95rem; }
+  .trap strong { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warn); display: block; margin-bottom: 0.35rem; }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; font-family: 'IBM Plex Sans', sans-serif; }
+  thead tr { background: var(--ink); color: #fff; }
+  thead th { padding: 0.6rem 0.9rem; text-align: left; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.07em; text-transform: uppercase; }
+  tbody tr { border-bottom: 1px solid var(--rule); }
+  tbody tr:nth-child(even) { background: rgba(0,0,0,0.025); }
+  tbody td { padding: 0.65rem 0.9rem; vertical-align: top; line-height: 1.55; }
+  tbody td:first-child { font-weight: 600; }
+  .tag { display: inline-block; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; padding: 0.15rem 0.4rem; border-radius: 2px; }
+  .tag-val { background: #dbeafe; color: #1e40af; }
+  .tag-ver { background: #dcfce7; color: #166534; }
+
+  /* ── CODE ── */
+  pre, code { font-family: 'IBM Plex Mono', monospace; }
+  code { background: #e8e4de; color: var(--ink); padding: 0.1em 0.4em; border-radius: 3px; font-size: 0.85em; }
+  pre { background: var(--code-bg); color: var(--code-fg); padding: 1.25rem 1.5rem; border-radius: 4px; overflow-x: auto; font-size: 0.82rem; line-height: 1.6; margin: 1rem 0; }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+  .kw { color: #cba6f7; } .str { color: #a6e3a1; } .num { color: #fab387; } .cm { color: #6c7086; font-style: italic; } .fn { color: #89b4fa; }
+
+  /* ── STEPS ── */
+  .steps { counter-reset: step; list-style: none; padding: 0; }
+  .steps li { counter-increment: step; display: flex; gap: 1rem; margin-bottom: 0.75rem; align-items: flex-start; }
+  .steps li::before { content: counter(step); flex-shrink: 0; width: 1.6rem; height: 1.6rem; background: var(--accent); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 600; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 0.2rem; }
+
+  /* ── FLOW BAR ── */
+  .flow { display: flex; flex-wrap: wrap; gap: 0; margin: 1.5rem 0; border: 1px solid var(--rule); }
+  .flow-item { flex: 1; min-width: 80px; padding: 0.6rem 0.4rem; text-align: center; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em; background: var(--paper); border-right: 1px solid var(--rule); }
+  .flow-item:last-child { border-right: none; }
+  .flow-item.highlight { background: var(--ink); color: #fff; }
+  .flow-num { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--muted); margin-bottom: 0.2rem; }
+  .flow-item.highlight .flow-num { color: #aaa; }
+
+  /* ── TWO-COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--rule); padding: 1.2rem; border-radius: 4px; }
+  .card h4 { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--accent); margin-bottom: 0.5rem; }
+  .card p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+  /* ── CLOSING ── */
+  .closing { background: var(--ink); color: #fff; padding: 3rem 2rem; text-align: center; }
+  .closing h3 { font-size: 1.25rem; border: none; margin: 0 0 0.75rem; color: #fff; }
+  .closing p { color: #bbb; max-width: 620px; margin: 0 auto; font-style: italic; }
+  .closing .badge { display: inline-block; margin-top: 1.5rem; background: var(--accent); color: #fff; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.4rem 1.25rem; border-radius: 2px; }
+
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .core-tab { padding: 0.75rem 1rem; font-size: 0.7rem; }
+    nav a { font-size: 0.62rem; padding: 0.75rem 0.6rem; }
+    .hero { padding: 2.5rem 1.25rem 2rem; }
+    .content { padding: 0 1.25rem 4rem; }
+    .top-bar { padding: 0 1.25rem; }
+  }
+</style>
+</head>
+<body class="core-a">
+
+<!-- ══════════════════════════════════════════
+     TOP BAR: Core selector + Language toggle
+     ══════════════════════════════════════════ -->
+<div class="top-bar">
+  <div class="core-tabs">
+    <button class="core-tab active" id="tab-a" onclick="setCore('a')">
+      <span class="zh">必修部分 A</span><span class="en">Core A</span>
+      <span class="badge"><span class="zh">資訊處理</span><span class="en">Info &amp; Data</span></span>
+    </button>
+    <button class="core-tab" id="tab-b" onclick="setCore('b')">
+      <span class="zh">必修部分 B</span><span class="en">Core B</span>
+      <span class="badge"><span class="zh">電腦系統</span><span class="en">Computer Systems</span></span>
+    </button>
+    <button class="core-tab" id="tab-c" onclick="setCore('c')">
+      <span class="zh">必修部分 C</span><span class="en">Core C</span>
+      <span class="badge"><span class="zh">互聯網應用</span><span class="en">Internet &amp; Apps</span></span>
+    </button>
+  </div>
+  <div class="lang-group">
+    <span class="lang-label"><span class="zh">語言</span><span class="en">Language</span></span>
+    <button class="lang-btn active" id="btn-zh" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STICKY NAV (swaps with core)
+     ══════════════════════════════════════════ -->
+<nav>
+  <div class="nav-brand">DSE ICT</div>
+
+  <!-- Core A nav links -->
+  <div class="nav-core-a">
+    <a href="#s1"><span class="zh">簡介</span><span class="en">Intro</span></a>
+    <a href="#s2"><span class="zh">資訊處理</span><span class="en">Info Processing</span></a>
+    <a href="#s3"><span class="zh">數據表示</span><span class="en">Data Repr.</span></a>
+    <a href="#s4"><span class="zh">電腦系統</span><span class="en">Hardware</span></a>
+    <a href="#s5"><span class="zh">互聯網</span><span class="en">Internet</span></a>
+    <a href="#s6"><span class="zh">數據庫</span><span class="en">Database</span></a>
+    <a href="#s7"><span class="zh">計算思維</span><span class="en">Programming</span></a>
+    <a href="#s8"><span class="zh">社會影響</span><span class="en">Ethics</span></a>
+  </div>
+
+  <!-- Core B nav links -->
+  <div class="nav-core-b">
+    <a href="#s9"><span class="zh">架構概覽</span><span class="en">Overview</span></a>
+    <a href="#s10"><span class="zh">硬件架構</span><span class="en">Hardware Arch.</span></a>
+    <a href="#s11"><span class="zh">處理器</span><span class="en">Processor</span></a>
+    <a href="#s12"><span class="zh">記憶體與儲存</span><span class="en">Memory</span></a>
+    <a href="#s13"><span class="zh">周邊設備</span><span class="en">I/O</span></a>
+    <a href="#s14"><span class="zh">系統軟件</span><span class="en">System SW</span></a>
+    <a href="#s15"><span class="zh">運作模式</span><span class="en">Op. Modes</span></a>
+    <a href="#s16"><span class="zh">考試攻略</span><span class="en">Exam Tactics</span></a>
+  </div>
+  <!-- Core C nav links -->
+  <div class="nav-core-c">
+    <a href="#s17"><span class="zh">網絡基礎</span><span class="en">Networking</span></a>
+    <a href="#s18"><span class="zh">傳輸協議</span><span class="en">Protocols</span></a>
+    <a href="#s19"><span class="zh">現代服務</span><span class="en">Modern Services</span></a>
+    <a href="#s20"><span class="zh">網絡保安</span><span class="en">Security</span></a>
+    <a href="#s21"><span class="zh">密碼學</span><span class="en">Cryptography</span></a>
+    <a href="#s22"><span class="zh">網頁製作</span><span class="en">Web Authoring</span></a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     CORE A PANEL
+     ══════════════════════════════════════════ -->
+<div class="core-panel active" id="panel-a">
+
+  <div class="hero">
+    <div class="hero-tag">
+      <span class="zh">Band 1 特別版 · 必修部分 A</span>
+      <span class="en">Band 1 Special Edition · Core A</span>
+    </div>
+    <h1>
+      <span class="zh">高效溫習指南<br><span>必修部分 A</span></span>
+      <span class="en">Ultimate High-Velocity<br><span>Revision Guide — Core A</span></span>
+    </h1>
+    <p>
+      <span class="zh">針對香港中學文憑試資訊及通訊科技科卷一甲及乙，助你從標準水平提升至第5**級答題質素。</span>
+      <span class="en">Strategic consolidation for DSE ICT Paper 1A &amp; 1B — elevate your responses to Level 5★★ quality.</span>
+    </p>
+    <div class="priority-grid">
+      <div class="priority-card high">
+        <div class="label"><span class="zh">★ 高頻 / 高分</span><span class="en">★ High Frequency / High Mark</span></div>
+        <div class="topics"><span class="zh">演算法、試算表公式、SQL 查詢</span><span class="en">Algorithms, Spreadsheet Formulas, SQL Queries</span></div>
+        <div class="focus"><span class="zh">掌握語法、邏輯及「乾跑」精準度。</span><span class="en">Mastery of syntax, logic, and dry-run precision.</span></div>
+      </div>
+      <div class="priority-card med">
+        <div class="label"><span class="zh">★ 技術精確度</span><span class="en">★ Technical Precision</span></div>
+        <div class="topics"><span class="zh">二進制補碼、公開密碼匙基礎建設、頻寬計算</span><span class="en">Two's Complement, PKI, Bandwidth Calculations</span></div>
+        <div class="focus"><span class="zh">二進制與十進制單位換算須絕對精準。</span><span class="en">Absolute accuracy in unit conversion (Binary vs. Decimal).</span></div>
+      </div>
+      <div class="priority-card low">
+        <div class="label"><span class="zh">★ 概念評析</span><span class="en">★ Conceptual Evaluation</span></div>
+        <div class="topics"><span class="zh">社會影響、人工智能訓練、硬件比較</span><span class="en">Social Implications, AI Training, Hardware Comparisons</span></div>
+        <div class="focus"><span class="zh">「所以又點？」——解釋影響及理由。</span><span class="en">The "So What?" layer: explaining impacts and justifications.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- SECTION 1 -->
+  <section id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2><span class="zh">策略性掌握必修部分 A</span><span class="en">Strategic Mastery of Core A</span></h2>
+    </div>
+    <p>
+      <span class="zh">必修部分並非課程的第一章那麼簡單——它是整份試卷的根基。在卷一甲及乙中，必修部分佔據最高比例的分數。</span>
+      <span class="en">Core A is not merely the first chapter of the syllabus — it is the foundational bedrock of the entire exam. Core A topics contribute the highest volume of marks across both Paper 1A and Paper 1B.</span>
+    </p>
+    <p>
+      <span class="zh">對於 Band 1 考生而言，掌握本部分即建立了分數的「安全網」，讓你以心理優勢迎戰選修部分。本指引旨在提升你的技術精確度，並將你的評析答案由一般水平提升至第5**級質素。</span>
+      <span class="en">For a Band 1 candidate, mastering this section creates a "safety net" of marks, allowing you to approach the elective modules with psychological advantage. This guide is designed to refine your technical accuracy and elevate your evaluative responses to Level 5★★ quality.</span>
+    </p>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2><span class="zh">資訊處理：從原始數據到知識</span><span class="en">Information Processing: From Raw Data to Knowledge</span></h2>
+    </div>
+    <p>
+      <span class="zh">理解「數據→資訊→知識」的層次，是解答高階評析題的關鍵。<strong>數據</strong>是未經整理的原始事實；<strong>資訊</strong>是經處理並賦予情境的數據；<strong>知識</strong>則是對資訊的分析應用，用以辨別趨勢或作出理性判斷。</span>
+      <span class="en">Understanding the <strong>Data → Information → Knowledge</strong> hierarchy is essential for high-order evaluation questions. <strong>Data</strong> is unorganised raw facts; <strong>information</strong> is data processed into context; <strong>knowledge</strong> is the analytical application of information to identify trends or make informed judgements.</span>
+    </p>
+    <h3><span class="zh">有效性檢驗與數據驗證的分別</span><span class="en">Data Validation vs. Data Verification</span></h3>
+    <p>
+      <span class="zh">為應對「垃圾進、垃圾出」（GIGO）問題：<strong>有效性檢驗</strong>確保數據<em>合理</em>；<strong>數據驗證</strong>確保數據與來源<em>一致</em>。</span>
+      <span class="en">To combat <strong>Garbage In, Garbage Out (GIGO)</strong>: <strong>validation</strong> ensures data is <em>sensible</em>; <strong>verification</strong> ensures it is <em>correct against the source</em>.</span>
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th><span class="zh">方法</span><span class="en">Method</span></th>
+          <th><span class="zh">類型</span><span class="en">Type</span></th>
+          <th><span class="zh">具體功能</span><span class="en">Specific Role</span></th>
+          <th><span class="zh">減少 GIGO 的作用</span><span class="en">Role in Reducing GIGO</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="zh">存在性核查</span><span class="en">Presence Check</span></td><td><span class="tag tag-val"><span class="zh">有效性</span><span class="en">Validation</span></span></td><td><span class="zh">確保必填欄位不留空白。</span><span class="en">Ensures required fields are not left blank.</span></td><td><span class="zh">防止關鍵記錄缺失（例如：學生姓名）。</span><span class="en">Prevents critical missing records (e.g., Student Name).</span></td></tr>
+          <tr><td><span class="zh">範圍核查</span><span class="en">Range Check</span></td><td><span class="tag tag-val"><span class="zh">有效性</span><span class="en">Validation</span></span></td><td><span class="zh">確保數據在合理範圍內。</span><span class="en">Ensures data falls within logical boundaries.</span></td><td><span class="zh">防止不可能的輸入（例如：年齡 &gt; 120）。</span><span class="en">Prevents impossible entries (e.g., Age &gt; 120).</span></td></tr>
+          <tr><td><span class="zh">格式核查</span><span class="en">Format Check</span></td><td><span class="tag tag-val"><span class="zh">有效性</span><span class="en">Validation</span></span></td><td><span class="zh">確保數據符合指定格式。</span><span class="en">Ensures data follows a specific pattern.</span></td><td><span class="zh">偵測結構錯誤（例如：電郵地址缺少「@」）。</span><span class="en">Detects structural errors (e.g., missing "@" in email).</span></td></tr>
+          <tr><td><span class="zh">核對數字</span><span class="en">Check Digit</span></td><td><span class="tag tag-val"><span class="zh">有效性</span><span class="en">Validation</span></span></td><td><span class="zh">以演算法核對數字。</span><span class="en">Uses an algorithm to verify digits.</span></td><td><span class="zh">偵測識別碼的轉錄或轉置錯誤。</span><span class="en">Detects transcription or transposition errors in IDs.</span></td></tr>
+          <tr><td><span class="zh">雙重輸入</span><span class="en">Double Entry</span></td><td><span class="tag tag-ver"><span class="zh">核實</span><span class="en">Verification</span></span></td><td><span class="zh">要求輸入相同數據兩次。</span><span class="en">Requires entering the same data twice.</span></td><td><span class="zh">減少人為打字錯誤（例如：新密碼設定）。</span><span class="en">Reduces human typing errors (e.g., new passwords).</span></td></tr>
+          <tr><td><span class="zh">校對</span><span class="en">Proofreading</span></td><td><span class="tag tag-ver"><span class="zh">核實</span><span class="en">Verification</span></span></td><td><span class="zh">人手對照原始文件核查。</span><span class="en">Human comparison against source documents.</span></td><td><span class="zh">捕捉演算法可能遺漏的細微錯誤。</span><span class="en">Catches subtle errors that algorithms might miss.</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3><span class="zh">資訊處理的七個階段</span><span class="en">The 7-Stage Flow of Information Processing</span></h3>
+    <div class="flow">
+      <div class="flow-item"><span class="flow-num">1</span><span class="zh">收集</span><span class="en">Collection</span></div>
+      <div class="flow-item"><span class="flow-num">2</span><span class="zh">組織</span><span class="en">Organisation</span></div>
+      <div class="flow-item highlight"><span class="flow-num">3</span><span class="zh">分析</span><span class="en">Analysis</span></div>
+      <div class="flow-item"><span class="flow-num">4</span><span class="zh">儲存</span><span class="en">Storage</span></div>
+      <div class="flow-item"><span class="flow-num">5</span><span class="zh">處理</span><span class="en">Processing</span></div>
+      <div class="flow-item"><span class="flow-num">6</span><span class="zh">傳輸</span><span class="en">Transmission</span></div>
+      <div class="flow-item"><span class="flow-num">7</span><span class="zh">演示</span><span class="en">Presentation</span></div>
+    </div>
+    <div class="so-what">
+      <strong><span class="zh">所以又點？——分析階段</span><span class="en">So What? — The Analysis Stage</span></strong>
+      <span class="zh">一般數據庫只負責儲存及處理數據，但高階資訊系統的分野在於<em>分析</em>階段。利用樞紐分析表或「假設」情境辨別趨勢，能將靜態記錄轉化為決策的策略資產。</span>
+      <span class="en">A simple database stores and processes data, but an advanced information system is differentiated by the <em>Analysis</em> stage. Using Pivot Tables or "What-if" scenarios to identify trends turns static records into a strategic asset for decision-making.</span>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2><span class="zh">數據表示：數位領域的精確性</span><span class="en">Data Representation: Precision in the Digital Domain</span></h2>
+    </div>
+    <p><span class="zh">二進制及十六進制系統是硬件通訊及記憶體定址的語言。十六進制尤其適合簡潔地表示大型二進制字串（如 MAC 地址）。</span><span class="en">Binary and hexadecimal systems form the language of hardware communication and memory addressing. Hexadecimal is valued for representing large binary strings (like MAC addresses) concisely.</span></p>
+    <h3><span class="zh">技術指引：二進制補碼表示法</span><span class="en">Technical Guide: Two's Complement Representation</span></h3>
+    <ol class="steps">
+      <li><span class="zh"><strong>從正數的二進制開始。</strong> 例：以8位元表示 −3 → <code>00000011</code></span><span class="en"><strong>Start with the positive binary.</strong> Example: for −3 in 8-bit → <code>00000011</code></span></li>
+      <li><span class="zh"><strong>反轉所有位元。</strong> → <code>11111100</code></span><span class="en"><strong>Invert all bits.</strong> → <code>11111100</code></span></li>
+      <li><span class="zh"><strong>加 1。</strong> → <code>11111101</code> ✓</span><span class="en"><strong>Add 1.</strong> → <code>11111101</code> ✓</span></li>
+    </ol>
+    <div class="so-what">
+      <strong><span class="zh">所以又點？——溢出誤差</span><span class="en">So What? — Overflow Errors</span></strong>
+      <span class="zh">溢出誤差是指計算結果超出位元系統的最大範圍，導致符號位元錯誤翻轉，使電腦無法將結果「塞進」分配的記憶體，往往引致軟件崩潰或邏輯損壞。</span>
+      <span class="en">An overflow error occurs when a calculation result exceeds the maximum range of the bit-system, causing the sign bit to flip incorrectly. The computer cannot "fit" the result into the allocated memory, often resulting in critical software crashes or logic corruption.</span>
+    </div>
+    <h3><span class="zh">字符編碼比較</span><span class="en">Character Encoding Comparison</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">編碼</span><span class="en">Encoding</span></th><th><span class="zh">語言範圍</span><span class="en">Language Scope</span></th><th><span class="zh">儲存影響</span><span class="en">Storage Impact</span></th><th><span class="zh">兼容性影響</span><span class="en">Compatibility Impact</span></th></tr></thead>
+      <tbody>
+        <tr><td>ASCII</td><td><span class="zh">英語／西方語言</span><span class="en">English / Western</span></td><td><span class="zh">每字符7至8位元。</span><span class="en">7 bits to 1 byte per char.</span></td><td><span class="zh">全球標準；不支援非西方字符。</span><span class="en">Global standard; lacks non-Western support.</span></td></tr>
+        <tr><td>Big-5 / GB</td><td><span class="zh">繁體 / 簡體中文</span><span class="en">Trad. / Simp. Chinese</span></td><td><span class="zh">每字符2個字節。</span><span class="en">2 bytes per character.</span></td><td><span class="zh">本地市場必需；容易出現「亂碼」。</span><span class="en">Essential for local markets; prone to "garbled" text.</span></td></tr>
+        <tr><td>Unicode</td><td><span class="zh">通用</span><span class="en">Universal</span></td><td><span class="zh">每字符1至4個字節。</span><span class="en">1 to 4 bytes per character.</span></td><td><span class="zh">開銷較大，但確保通用兼容性。</span><span class="en">Large overhead but ensures universal compatibility.</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2><span class="zh">電腦系統基礎：硬件與系統邏輯</span><span class="en">Computer System Fundamentals: Hardware &amp; System Logic</span></h2>
+    </div>
+    <p><span class="zh"><strong>提取─譯碼─執行（FDE）周期</strong>是機器組織的核心。中央處理器從隨機存取記憶體（RAM）提取指令，解碼機器碼，然後執行任務——每秒重複數十億次（時鐘頻率）。</span><span class="en">The <strong>Fetch-Decode-Execute (FDE) cycle</strong> is the heartbeat of machine organisation. The CPU fetches instructions from RAM, decodes the machine code, and executes the task — repeating this billions of times per second (Clock Rate).</span></p>
+    <h3><span class="zh">設備評估：桌上電腦 vs. 智能手機</span><span class="en">Device Evaluation: Desktop vs. Smartphone</span></h3>
+    <div class="two-col">
+      <div class="card"><h4><span class="zh">設備 A — 桌上電腦</span><span class="en">Device A — Desktop</span></h4><p><span class="zh">配備<strong>獨立顯示卡（專用 GPU）</strong>。</span><span class="en">Features a <strong>standalone display card (dedicated GPU)</strong>.</span></p><div class="so-what" style="margin-top:0.5rem"><strong><span class="zh">所以又點？</span><span class="en">So What?</span></strong><span class="zh">專用 GPU 能將數學密集型運算從 CPU 卸載，為渲染 4K 影片或高端模擬提供卓越的圖形效能。</span><span class="en">A dedicated GPU offloads math-heavy tasks from the CPU, providing superior graphical performance for 4K video rendering or high-end simulations.</span></div></div>
+      <div class="card"><h4><span class="zh">設備 B — 智能手機</span><span class="en">Device B — Smartphone</span></h4><p><span class="zh">優先採用<strong>快閃記憶體</strong>及整合單元。</span><span class="en">Prioritises <strong>Flash memory</strong> and integrated units.</span></p><div class="so-what" style="margin-top:0.5rem"><strong><span class="zh">所以又點？</span><span class="en">So What?</span></strong><span class="zh">快閃記憶體具備更高的數據傳輸速率及更低的功耗，對延長電池壽命和確保流動裝置的可攜性至關重要。</span><span class="en">Flash memory offers higher data transfer rates and lower power consumption, critical for extending battery life and portability.</span></div></div>
+    </div>
+    <h3><span class="zh">硬件提升與軟件的關聯</span><span class="en">Hardware Improvements &amp; The Software Link</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">組件</span><span class="en">Component</span></th><th><span class="zh">提升方式</span><span class="en">Improvement</span></th><th><span class="zh">影響</span><span class="en">Impact</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">RAM 容量</span><span class="en">RAM Capacity</span></td><td><span class="zh">容量增大</span><span class="en">Larger capacity</span></td><td><span class="zh">更多應用程式可同時駐留記憶體，減少緩慢的虛擬記憶體交換。</span><span class="en">More applications reside in memory simultaneously, reducing slow virtual memory swaps.</span></td></tr>
+        <tr><td><span class="zh">CPU 時鐘頻率</span><span class="en">CPU Clock Rate</span></td><td><span class="zh">頻率提高</span><span class="en">Higher rate</span></td><td><span class="zh">每秒可執行更多 FDE 周期，直接提升系統吞吐量。</span><span class="en">More FDE cycles per second, directly increasing system throughput.</span></td></tr>
+        <tr><td><span class="zh">驅動程式</span><span class="en">Driver Programs</span></td><td><span class="zh">使用最新版本</span><span class="en">Latest version</span></td><td><span class="zh">修復原版錯誤，確保與新版作業系統的兼容性。</span><span class="en">Fixes bugs of the original version and ensures compatibility with newer OS updates.</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2><span class="zh">互聯網及其應用：連接與網絡保安</span><span class="en">Internet &amp; Its Applications: Connectivity and Cybersecurity</span></h2>
+    </div>
+    <p><span class="zh">隨著由 <strong>IPv4</strong>（32位元）過渡至 <strong>IPv6</strong>（128位元）以配合物聯網（IoT），頻寬計算及保安知識的技術精確性是 Band 1 學生的致勝關鍵。</span><span class="en">As we shift from <strong>IPv4</strong> (32-bit) to <strong>IPv6</strong> (128-bit) to accommodate the Internet of Things (IoT), technical precision in bandwidth and security is the key differentiator for Band 1 students.</span></p>
+    <h3><span class="zh">頻寬計算——二進制精確法</span><span class="en">Bandwidth Calculation — Binary Precision</span></h3>
+    <div class="trap"><strong><span class="zh">⚠ 常見陷阱</span><span class="en">⚠ Common Trap</span></strong><span class="zh">切勿使用十進制 1000 簡化方法。Band 1 的精確做法是在題目涉及儲存單位時採用<em>二進制（×1024）</em>換算。</span><span class="en">Avoid the decimal 1000 shortcut. For Band 1 precision, use <em>binary units (×1024)</em> for file sizes when requested or implied.</span></div>
+    <p><strong><span class="zh">情境：</span><span class="en">Scenario:</span></strong> <span class="zh">以 100 Mbps 上載 200 張照片（每張 5 MB）。</span><span class="en">Uploading 200 photos (5 MB each) at 100 Mbps.</span></p>
+    <ol class="steps">
+      <li><span class="zh"><strong>總位元數：</strong> 200 × 5 MB × 1024 × 1024 × 8 = <strong>8,388,608,000 位元</strong></span><span class="en"><strong>Total Size in Bits:</strong> 200 × 5 MB × 1024 × 1024 × 8 = <strong>8,388,608,000 bits</strong></span></li>
+      <li><span class="zh"><strong>最短時間：</strong> 8,388,608,000 ÷ 100,000,000 = <strong>83.9 秒</strong>（3位有效數字）</span><span class="en"><strong>Shortest Time:</strong> 8,388,608,000 ÷ 100,000,000 = <strong>83.9 seconds</strong> (3 sig. fig.)</span></li>
+    </ol>
+    <h3><span class="zh">公開密碼匙基礎建設（PKI）：雙重機制</span><span class="en">Public Key Infrastructure (PKI): Dual Mechanisms</span></h3>
+    <div class="two-col">
+      <div class="card"><h4><span class="zh">1 — 保密性</span><span class="en">1 — Confidentiality</span></h4><p><span class="zh">Eva 以<strong>Paul 的公開密碼匙</strong>加密。只有<strong>Paul 的私人密碼匙</strong>才能解密。</span><span class="en">Eva uses <strong>Paul's Public Key</strong> to encrypt. Only <strong>Paul's Private Key</strong> can decrypt.</span></p><div class="so-what" style="margin-top:0.5rem"><strong><span class="zh">所以又點？</span><span class="en">So What?</span></strong><span class="zh">即使在傳輸途中被截取，檔案對任何人（除 Paul 外）仍無法讀取。</span><span class="en">Even if intercepted, the file is unreadable to anyone but Paul.</span></div></div>
+      <div class="card"><h4><span class="zh">2 — 身份驗證 / 不可否認性</span><span class="en">2 — Authentication / Non-Repudiation</span></h4><p><span class="zh">Eva 以<strong>自己的私人密碼匙</strong>簽署。Paul 以 <strong>Eva 的公開密碼匙</strong>核實。</span><span class="en">Eva uses <strong>her own Private Key</strong> to sign. Paul uses <strong>Eva's Public Key</strong> to verify.</span></p><div class="so-what" style="margin-top:0.5rem"><strong><span class="zh">所以又點？</span><span class="en">So What?</span></strong><span class="zh">確認檔案確實來自 Eva，且在傳輸途中未被篡改。</span><span class="en">This proves the file definitely came from Eva and was not altered in transit.</span></div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2><span class="zh">數據庫管理：結構與提取</span><span class="en">Database Management: Structure and Extraction</span></h2>
+    </div>
+    <p><span class="zh">關聯式數據庫依賴<strong>數據完整性</strong>維持可靠性。</span><span class="en">Relational databases rely on <strong>Data Integrity</strong> to maintain reliability.</span></p>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">完整性類型</span><span class="en">Integrity Type</span></th><th><span class="zh">規則</span><span class="en">Rule</span></th><th><span class="zh">示例</span><span class="en">Example</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">實體完整性</span><span class="en">Entity Integrity</span></td><td><span class="zh">主鍵必須唯一——不可重複。</span><span class="en">Unique Primary Keys — no duplicates.</span></td><td><span class="zh">每個學生記錄有唯一的學生編號。</span><span class="en">Each student record has a unique Student ID.</span></td></tr>
+        <tr><td><span class="zh">參照完整性</span><span class="en">Referential Integrity</span></td><td><span class="zh">外鍵必須與現有主鍵相符。</span><span class="en">Foreign Keys must match existing Primary Keys.</span></td><td><span class="zh">訂單不可引用不存在的客戶編號。</span><span class="en">An order cannot reference a non-existent customer ID.</span></td></tr>
+        <tr><td><span class="zh">域完整性</span><span class="en">Domain Integrity</span></td><td><span class="zh">數據必須符合定義的類型／邏輯。</span><span class="en">Data must match defined types/logic.</span></td><td><span class="zh">酒店系統中，入住日期不能晚於退房日期。</span><span class="en">Check-in date cannot be after check-out date in a hotel system.</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3><span class="zh">SQL 主要參考（表格：SS）</span><span class="en">Master SQL Reference (Table: SS)</span></h3>
+    <pre><code><span class="kw">SELECT</span> CL, CNO <span class="kw">FROM</span> SS
+<span class="kw">WHERE</span> SER = <span class="str">'Flag selling'</span>
+  <span class="kw">AND</span> CL <span class="kw">LIKE</span> <span class="str">'2_'</span>   <span class="cm">-- '_' = 恰好一個字符 / exactly one character</span></code></pre>
+    <pre><code><span class="kw">SELECT</span> CL, <span class="fn">SUM</span>(HR) <span class="kw">FROM</span> SS
+<span class="kw">GROUP BY</span> CL   <span class="cm">-- 不在聚合函數內的欄位必須列在 GROUP BY / non-aggregate fields MUST be in GROUP BY</span></code></pre>
+    <h3><span class="zh">填寫式表格 vs. 報告</span><span class="en">Form vs. Report</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">物件</span><span class="en">Object</span></th><th><span class="zh">主要用途</span><span class="en">Primary Purpose</span></th><th><span class="zh">主要特點</span><span class="en">Key Features</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">填寫式表格</span><span class="en">Form</span></td><td><span class="zh">方便用戶輸入數據</span><span class="en">User-Friendly Data Entry</span></td><td><span class="zh">每次顯示一條記錄；設有下拉列表；防止輸入錯誤。</span><span class="en">Shows one record at a time; dropdown lists for fixed-value validation; prevents input errors.</span></td></tr>
+        <tr><td><span class="zh">報告</span><span class="en">Report</span></td><td><span class="zh">綜合數據輸出</span><span class="en">Synthesised Data Output</span></td><td><span class="zh">將大量記錄整合為專業版面，供打印或行政摘要使用。</span><span class="en">Summarises large volumes of records into a professional layout for printing or executive summary.</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section id="s7">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2><span class="zh">計算思維與程式編寫：自動化邏輯</span><span class="en">Computational Thinking &amp; Programming: The Logic of Automation</span></h2>
+    </div>
+    <p><span class="zh">計算思維建基於三大支柱：<strong>抽象化</strong>（忽略無關的細節）、<strong>算法思維</strong>（逐步解題的邏輯）及<strong>自動化</strong>（編寫程式碼）。</span><span class="en">Computational Thinking rests on three pillars: <strong>Abstraction</strong> (ignoring the irrelevant), <strong>Algorithmic Thinking</strong> (step-by-step logic), and <strong>Automation</strong> (the code).</span></p>
+    <h3><span class="zh">乾跑指引：「索引陷阱」</span><span class="en">Dry Run Guide: The "Index Trap"</span></h3>
+    <div class="trap"><strong><span class="zh">⚠ 考試陷阱</span><span class="en">⚠ Exam Trap</span></strong><span class="zh">在 Python 中，<code>range(0, 5)</code> 包含 0 但<em>不包含</em> 5 → 索引為 0, 1, 2, 3, 4。</span><span class="en">In Python, <code>range(0, 5)</code> includes 0 but <em>excludes</em> 5 → indices 0, 1, 2, 3, 4 only.</span></div>
+    <pre><code><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">0</span>, <span class="num">5</span>):
+    s2[<span class="num">4</span>-i] = s1[i]</code></pre>
+    <div class="table-wrap"><table>
+      <thead><tr><th>i</th><th><span class="zh">操作</span><span class="en">Operation</span></th><th><span class="zh">賦值</span><span class="en">Value</span></th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>s2[4] = s1[0]</td><td>'S'</td></tr>
+        <tr><td>1</td><td>s2[3] = s1[1]</td><td>'T'</td></tr>
+        <tr><td>2</td><td>s2[2] = s1[2]</td><td>'E'</td></tr>
+        <tr><td>3</td><td>s2[1] = s1[3]</td><td>'A'</td></tr>
+        <tr><td>4</td><td>s2[0] = s1[4]</td><td>'M'</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong><span class="zh">結果：</span><span class="en">Result:</span></strong> s2 = <code>['M', 'A', 'E', 'T', 'S']</code></p>
+    <h3><span class="zh">核對數字驗證：用戶名稱「4B115」</span><span class="en">Check Digit Validation: Username '4B115'</span></h3>
+    <p><span class="zh">演算法：<strong>S = F + N</strong>。若班別（C）為「B」，則 <strong>S = S × 3</strong>。核對數字 D = S mod 10。</span><span class="en">Algorithm: <strong>S = F + N</strong>. If Class (C) is 'B', then <strong>S = S × 3</strong>. Check Digit D = S mod 10.</span></p>
+    <ol class="steps">
+      <li><span class="zh">F = 4，N = 11 → S = <strong>15</strong></span><span class="en">F = 4, N = 11 → S = <strong>15</strong></span></li>
+      <li><span class="zh">班別為「B」→ S = 15 × 3 = <strong>45</strong></span><span class="en">Class is 'B' → S = 15 × 3 = <strong>45</strong></span></li>
+      <li><span class="zh">D = 45 mod 10 = <strong>5</strong> ✓ 用戶名稱有效</span><span class="en">D = 45 mod 10 = <strong>5</strong> ✓ Username is Valid</span></li>
+    </ol>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section id="s8">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2><span class="zh">社會影響：道德與資訊時代</span><span class="en">Social Implications: Ethics and the Information Age</span></h2>
+    </div>
+    <h3><span class="zh">軟件許可與保安層</span><span class="en">Software Licensing &amp; Security Layer</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">許可類型</span><span class="en">License Type</span></th><th><span class="zh">定義</span><span class="en">Definition</span></th><th><span class="zh">「所以又點？」</span><span class="en">"So What?"</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">免費軟件</span><span class="en">Freeware</span></td><td><span class="zh">免費使用；版權保留。</span><span class="en">Free to use; copyright retained.</span></td><td><span class="zh"><strong>保安陷阱：</strong>可能收集個人數據或要求過多權限。</span><span class="en"><strong>Security Trap:</strong> May collect personal data or require excessive permissions.</span></td></tr>
+        <tr><td><span class="zh">共享軟件</span><span class="en">Shareware</span></td><td><span class="zh">試用期後須付費。</span><span class="en">Trial period, then pay.</span></td><td><span class="zh"><strong>法律風險：</strong>學校在試用期後繼續使用須承擔法律責任。</span><span class="en"><strong>Legal Risk:</strong> School faces liability if used past the trial period.</span></td></tr>
+        <tr><td><span class="zh">開放源碼</span><span class="en">Open Source</span></td><td><span class="zh">原始碼公開。</span><span class="en">Source code is public.</span></td><td><span class="zh"><strong>靈活性：</strong>可自行修改，但需要專業知識審查保安漏洞。</span><span class="en"><strong>Flexibility:</strong> Can be customised, but requires expertise to audit for security vulnerabilities.</span></td></tr>
+        <tr><td><span class="zh">版權軟件</span><span class="en">Copyrighted</span></td><td><span class="zh">完全法律限制。</span><span class="en">Full legal restriction.</span></td><td><span class="zh"><strong>可靠性：</strong>成本較高，但附帶官方支援及經審核的保安更新。</span><span class="en"><strong>Reliability:</strong> High cost, but includes official support and vetted security updates.</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3><span class="zh">專業資訊及通訊科技實踐：健康與人機工程學</span><span class="en">Professional ICT Practice: Health &amp; Ergonomics</span></h3>
+    <p><span class="zh">專業實踐需要應對<strong>重複性勞損（RSI）</strong>問題。人機工程學解決方案——包括可調節椅子、護腕托架及方便用戶的圖形用戶界面設計——並非單純的舒適措施，而是維持生產力及履行資訊及通訊科技環境中「照顧責任」的必要措施。</span><span class="en">Professional practice requires addressing <strong>Repetitive Strain Injury (RSI)</strong>. Ergonomic solutions — adjustable chairs, wrist rests, and user-friendly GUI design — are not mere comforts. They are essential measures to maintain productivity and fulfil the duty of care in an ICT environment.</span></p>
+  </section>
+
+  </div><!-- end .content Core A -->
+
+  <div class="closing">
+    <h3><span class="zh">給 Band 1 考生的寄語</span><span class="en">A Note for the Band 1 Student</span></h3>
+    <p><span class="zh">精通資訊及通訊科技並非靠背誦定義——而是運用邏輯解決現實問題。頻寬計算的精確度、SQL 語句的清晰度，以及道德評析的深度，正是第5**級考生的標誌。謹慎執行乾跑、留意索引陷阱，以主任工程師的策略思維迎戰考試。</span><span class="en">Mastery of ICT is not about memorising definitions — it is about applying logic to solve real-world problems. Precision in your bandwidth calculations, clarity in your SQL, and depth in your ethical evaluations are what distinguish a Level 5★★ candidate. Execute your dry runs with care, watch for index traps, and approach the exam with the strategic mindset of a Lead Architect.</span></p>
+    <div class="badge"><span class="zh">加油！你一定得！</span><span class="en">Good Luck — You've Got This</span></div>
+  </div>
+
+</div><!-- end #panel-a -->
+
+<!-- ══════════════════════════════════════════
+     CORE B PANEL
+     ══════════════════════════════════════════ -->
+<div class="core-panel" id="panel-b">
+
+  <div class="hero">
+    <div class="hero-tag">
+      <span class="zh">Band 1 特別版 · 必修部分 B</span>
+      <span class="en">Band 1 Special Edition · Core B</span>
+    </div>
+    <h1>
+      <span class="zh">電腦系統基礎<br><span>高效溫習指南</span></span>
+      <span class="en">Computer System Fundamentals<br><span>High-Velocity Revision Guide</span></span>
+    </h1>
+    <p>
+      <span class="zh">掌握硬件與軟件之間的相互依存關係，以第5**級的技術精確度迎戰考試。</span>
+      <span class="en">Master the interdependency between hardware and software — achieve Level 5★★ technical precision in the exam.</span>
+    </p>
+    <div class="priority-grid">
+      <div class="priority-card high">
+        <div class="label"><span class="zh">★ 高頻 / 高分</span><span class="en">★ High Frequency / High Mark</span></div>
+        <div class="topics"><span class="zh">FDE 周期、儲存媒體比較、作業系統功能</span><span class="en">FDE Cycle, Storage Media, OS Functions</span></div>
+        <div class="focus"><span class="zh">掌握寄存器序列及精確技術理據。</span><span class="en">Mastery of register sequence and precise technical justification.</span></div>
+      </div>
+      <div class="priority-card med">
+        <div class="label"><span class="zh">★ 技術精確度</span><span class="en">★ Technical Precision</span></div>
+        <div class="topics"><span class="zh">CPU 字長、頻寬計算、匯流排系統</span><span class="en">CPU Word Length, Bandwidth Calc., Bus System</span></div>
+        <div class="focus"><span class="zh">64位元記憶體定址優勢——避免說「比較快」。</span><span class="en">64-bit memory addressing advantage — never say "faster".</span></div>
+      </div>
+      <div class="priority-card low">
+        <div class="label"><span class="zh">★ 概念評析</span><span class="en">★ Conceptual Evaluation</span></div>
+        <div class="topics"><span class="zh">雲端運算、大數據、虛擬化</span><span class="en">Cloud Computing, Big Data, Virtualization</span></div>
+        <div class="focus"><span class="zh">解釋新興技術如何解決實際限制。</span><span class="en">Explain how emerging technologies solve real-world limitations.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- SECTION 9 -->
+  <section id="s9">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2><span class="zh">策略概覽：運算架構</span><span class="en">Strategic Overview: The Architecture of Computing</span></h2>
+    </div>
+    <p><span class="zh">電腦系統基礎是 DSE 資訊及通訊科技課程的結構骨幹。對於 Band 1 考生而言，達到第5**級要求超越死記硬背各組件，而是掌握<strong>硬件與軟件之間的相互依存關係</strong>。系統效能並非由單一組件決定，而是取決於硬件如何有效地支援軟件執行（例如：固態硬碟的吞吐量如何加速作業系統的啟動時間）。</span><span class="en">Computer System Fundamentals is the structural backbone of the DSE ICT syllabus. For a Band 1 student, achieving Level 5★★ requires moving beyond rote identification of components to mastering the <strong>interdependency between hardware and software</strong>. System performance is not determined by a single part, but by how effectively hardware supports software execution (e.g., how SSD throughput accelerates OS boot times).</span></p>
+    <p><span class="zh">本單元的核心是<strong>輸入─處理─輸出（IPO）周期</strong>，並由<strong>儲存</strong>作為支援。此周期是將原始數據（未經處理的事實）轉化為有意義資訊（經處理的有用輸出）的基本機制。</span><span class="en">At the core of this module is the <strong>Input-Process-Output (IPO) Cycle</strong>, supported by <strong>Storage</strong>. This cycle is the fundamental mechanism that transforms raw data (unprocessed facts) into meaningful information (processed, useful output).</span></p>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section id="s10">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <h2><span class="zh">硬件架構與機器組織</span><span class="en">Hardware Architecture and Machine Organisation</span></h2>
+    </div>
+    <p><span class="zh"><strong>主機板</strong>是電腦的中樞神經系統，提供連接所有組件的物理平台，並透過<strong>匯流排系統</strong>促進高速通訊。</span><span class="en">The <strong>motherboard</strong> serves as the central nervous system of the computer. It provides the physical platform that connects all components, facilitating high-speed communication via the <strong>bus system</strong>.</span></p>
+    <h3><span class="zh">圖形處理器與圖形架構</span><span class="en">GPU and Graphics Architecture</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">特性</span><span class="en">Feature</span></th><th><span class="zh">中央處理器（CPU）</span><span class="en">CPU</span></th><th><span class="zh">圖形處理器（GPU）</span><span class="en">GPU</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">設計意圖</span><span class="en">Design Intent</span></td><td><span class="zh">通用任務及系統控制。</span><span class="en">General-purpose tasks and system control.</span></td><td><span class="zh">專門用於高效能圖形渲染。</span><span class="en">Specialized for high-performance graphic rendering.</span></td></tr>
+        <tr><td><span class="zh">架構</span><span class="en">Architecture</span></td><td><span class="zh">針對串行處理優化（核心數目較少但功能強大）。</span><span class="en">Optimized for serial processing (fewer, powerful cores).</span></td><td><span class="zh">針對並行多任務優化（數千個較小的核心）。</span><span class="en">Optimized for parallel multitasking (thousands of smaller cores).</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="so-what">
+      <strong><span class="zh">所以又點？——整合圖形處理器 vs. 獨立顯示卡</span><span class="en">So What? — iGPU vs. Dedicated Graphics Cards</span></strong>
+      <p style="margin-top:0.5rem"><span class="zh"><strong>整合圖形處理器（iGPU）：</strong>內置於 CPU；共用系統 RAM。具成本效益，適合一般文字處理或行政工作。</span><span class="en"><strong>Integrated GPU (iGPU):</strong> Built into the CPU; shares system RAM. Cost-effective, suitable for general word processing or administrative tasks.</span></p>
+      <p><span class="zh"><strong>獨立顯示卡：</strong>配備專用<strong>視訊記憶體（VRAM）</strong>，提供 4K 影片剪輯、CAD 或高端遊戲所需的更高圖形效能。</span><span class="en"><strong>Dedicated Graphics Card:</strong> Has its own <strong>VRAM</strong>, providing higher graphical performance required for 4K video editing, CAD, or high-end gaming.</span></p>
+    </div>
+    <h3><span class="zh">系統匯流排</span><span class="en">The System Bus</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">匯流排</span><span class="en">Bus</span></th><th><span class="zh">傳輸內容</span><span class="en">Transmits</span></th><th><span class="zh">方向</span><span class="en">Direction</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">控制匯流排</span><span class="en">Control Bus</span></td><td><span class="zh">控制訊號（讀/寫指令）。</span><span class="en">Control signals (e.g., read/write commands).</span></td><td><span class="zh">單向</span><span class="en">One-way</span></td></tr>
+        <tr><td><span class="zh">地址匯流排</span><span class="en">Address Bus</span></td><td><span class="zh">記憶體地址（定位數據）。</span><span class="en">Memory addresses to locate data.</span></td><td><span class="zh">單向（CPU → 記憶體）</span><span class="en">One-way (CPU to memory)</span></td></tr>
+        <tr><td><span class="zh">數據匯流排</span><span class="en">Data Bus</span></td><td><span class="zh">實際數據或指令。</span><span class="en">Actual data or instructions.</span></td><td><span class="zh">雙向</span><span class="en">Two-way</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section id="s11">
+    <div class="section-header">
+      <span class="section-num">11</span>
+      <h2><span class="zh">處理器：提取─譯碼─執行周期</span><span class="en">The Processor: Fetch-Decode-Execute Cycle</span></h2>
+    </div>
+    <ol class="steps">
+      <li><span class="zh"><strong>提取：</strong><strong>控制單元（CU）</strong>從主記憶體中提取指令。</span><span class="en"><strong>Fetch:</strong> The <strong>Control Unit (CU)</strong> retrieves an instruction from main memory.</span></li>
+      <li><span class="zh"><strong>譯碼：</strong>控制單元將指令翻譯為機器級指令。</span><span class="en"><strong>Decode:</strong> The CU translates the instruction into machine-level commands.</span></li>
+      <li><span class="zh"><strong>執行：</strong><strong>算術及邏輯單元（ALU）</strong>執行實際的計算或邏輯運算。</span><span class="en"><strong>Execute:</strong> The <strong>Arithmetic and Logic Unit (ALU)</strong> performs the actual calculation or logic operation.</span></li>
+      <li><span class="zh"><strong>儲存：</strong>結果寫回寄存器或記憶體（由控制單元管理）。</span><span class="en"><strong>Store:</strong> The result is written back to a register or memory (managed by the CU).</span></li>
+    </ol>
+    <h3><span class="zh">內部寄存器交互</span><span class="en">Internal Register Interaction</span></h3>
+    <div class="flow">
+      <div class="flow-item"><span class="flow-num">PC</span><span class="zh">程式計數器</span><span class="en">Program Counter</span></div>
+      <div class="flow-item"><span class="flow-num">MAR</span><span class="zh">記憶體地址寄存器</span><span class="en">Mem. Address Reg.</span></div>
+      <div class="flow-item highlight"><span class="flow-num">MEM</span><span class="zh">記憶體</span><span class="en">Memory</span></div>
+      <div class="flow-item"><span class="flow-num">MDR</span><span class="zh">記憶體數據寄存器</span><span class="en">Mem. Data Reg.</span></div>
+      <div class="flow-item"><span class="flow-num">CIR</span><span class="zh">當前指令寄存器</span><span class="en">Current Instr. Reg.</span></div>
+    </div>
+    <div class="so-what">
+      <strong><span class="zh">所以又點？——CPU 效能因素</span><span class="en">So What? — CPU Performance Factors</span></strong>
+      <div class="table-wrap" style="margin-top:0.75rem"><table>
+        <thead><tr><th><span class="zh">因素</span><span class="en">Factor</span></th><th><span class="zh">說明</span><span class="en">Explanation</span></th></tr></thead>
+        <tbody>
+          <tr><td><span class="zh">時鐘頻率</span><span class="en">Clock Rate</span></td><td><span class="zh">每秒周期數（GHz）——直接影響指令執行速度。</span><span class="en">Number of cycles per second (GHz) — directly affects instruction execution speed.</span></td></tr>
+          <tr><td><span class="zh">核心數目</span><span class="en">Number of Cores</span></td><td><span class="zh">決定可同時並行執行的進程數量。</span><span class="en">Determines the number of processes run simultaneously.</span></td></tr>
+          <tr><td><span class="zh">字長</span><span class="en">Word Length</span></td><td><span class="zh">64位元處理器的策略優勢在於<strong>記憶體定址</strong>：32位元系統只能定址約4GB的RAM，64位元架構突破此瓶頸，允許大量記憶體分配。</span><span class="en">The strategic advantage of 64-bit is <strong>memory addressing</strong>: a 32-bit system is limited to ~4GB of RAM, whereas 64-bit breaks this bottleneck, allowing massive memory allocation.</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- SECTION 12 -->
+  <section id="s12">
+    <div class="section-header">
+      <span class="section-num">12</span>
+      <h2><span class="zh">記憶體與儲存層次結構</span><span class="en">Memory and Storage Hierarchy</span></h2>
+    </div>
+    <p><span class="zh">系統效能依賴策略性的取捨：組件越接近 CPU，速度越高，但容量越小，單位容量的價格亦越貴。</span><span class="en">System performance relies on a strategic trade-off: as components move closer to the CPU, speed increases, but capacity decreases and unit price per capacity rises.</span></p>
+    <h3><span class="zh">主記憶體：RAM vs. ROM</span><span class="en">Primary Memory: RAM vs. ROM</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">特性</span><span class="en">Feature</span></th><th><span class="zh">隨機存取記憶體（RAM）</span><span class="en">RAM</span></th><th><span class="zh">唯讀記憶體（ROM）</span><span class="en">ROM</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">揮發性</span><span class="en">Volatility</span></td><td><span class="zh">揮發性（斷電後數據消失）。</span><span class="en">Volatile (data lost when powered off).</span></td><td><span class="zh">非揮發性（保留數據）。</span><span class="en">Non-volatile (retains data).</span></td></tr>
+        <tr><td><span class="zh">可重寫性</span><span class="en">Rewritability</span></td><td><span class="zh">高速讀寫。</span><span class="en">High-speed read/write.</span></td><td><span class="zh">通常不能重寫。</span><span class="en">Usually cannot be rewritten.</span></td></tr>
+        <tr><td><span class="zh">用途</span><span class="en">Usage</span></td><td><span class="zh">暫存活躍程式/數據。</span><span class="en">Temporary storage for active programs/data.</span></td><td><span class="zh">儲存韌體/BIOS（啟動過程）。</span><span class="en">Stores Firmware/BIOS for the boot process.</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3><span class="zh">輔助儲存媒體</span><span class="en">Secondary Storage Media</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">媒體</span><span class="en">Media</span></th><th><span class="zh">類型</span><span class="en">Type</span></th><th><span class="zh">存取方式</span><span class="en">Access</span></th><th><span class="zh">速率</span><span class="en">Rate</span></th><th><span class="zh">耐用性</span><span class="en">Durability</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">磁帶</span><span class="en">Magnetic Tape</span></td><td><span class="zh">磁性</span><span class="en">Magnetic</span></td><td><span class="zh">順序</span><span class="en">Sequential</span></td><td><span class="zh">最低</span><span class="en">Lowest</span></td><td><span class="zh">易受濕度損壞。</span><span class="en">Prone to humidity damage.</span></td></tr>
+        <tr><td><span class="zh">硬碟（HDD）</span><span class="en">Hard Disk (HDD)</span></td><td><span class="zh">磁性</span><span class="en">Magnetic</span></td><td><span class="zh">直接</span><span class="en">Direct</span></td><td><span class="zh">中等</span><span class="en">Medium</span></td><td><span class="zh">易受撞擊損壞。</span><span class="en">Prone to impact damage.</span></td></tr>
+        <tr><td><span class="zh">固態硬碟（SSD）</span><span class="en">SSD</span></td><td><span class="zh"><strong>快閃記憶體</strong></span><span class="en"><strong>Flash Memory</strong></span></td><td><span class="zh">直接</span><span class="en">Direct</span></td><td><span class="zh"><strong>高</strong></span><span class="en"><strong>High</strong></span></td><td><span class="zh">耐用（無活動部件）。</span><span class="en">Durable (no moving parts).</span></td></tr>
+        <tr><td><span class="zh">光碟</span><span class="en">Optical Disk</span></td><td><span class="zh">光學</span><span class="en">Optical</span></td><td><span class="zh">直接</span><span class="en">Direct</span></td><td><span class="zh">中等</span><span class="en">Medium</span></td><td><span class="zh">易被刮花。</span><span class="en">Prone to scratches.</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="so-what">
+      <strong><span class="zh">所以又點？——快取記憶體</span><span class="en">So What? — Cache Memory</span></strong>
+      <span class="zh">快取記憶體充當超快速 CPU 與較慢 RAM 之間的緩衝區，以緩解<strong>「馮紐曼瓶頸」</strong>——即限制處理器接收數據能力的速度差距。</span>
+      <span class="en">Cache Memory acts as a buffer between the ultra-fast CPU and the slower RAM to mitigate the <strong>"von Neumann bottleneck"</strong> — the speed gap that limits the processor's ability to receive data.</span>
+    </div>
+  </section>
+
+  <!-- SECTION 13 -->
+  <section id="s13">
+    <div class="section-header">
+      <span class="section-num">13</span>
+      <h2><span class="zh">周邊設備技術與現代輸入/輸出</span><span class="en">Peripheral Technologies and Modern I/O</span></h2>
+    </div>
+    <p><span class="zh">輸入/輸出設備已演進至支援更直覺的<strong>人機互動（HCI）</strong>。</span><span class="en">I/O devices have evolved to support more intuitive <strong>Human-Computer Interaction (HCI)</strong>.</span></p>
+    <h3><span class="zh">指標設備：動作追蹤 vs. 位置追蹤</span><span class="en">Pointing Devices: Motion vs. Position Tracking</span></h3>
+    <div class="two-col">
+      <div class="card"><h4><span class="zh">動作追蹤</span><span class="en">Motion-Tracking</span></h4><p><span class="zh">（例如：滑鼠、軌跡球）游標移動是相對於設備的移動。</span><span class="en">(e.g., Mouse, Trackball) Cursor movement is relative to the movement of the device.</span></p></div>
+      <div class="card"><h4><span class="zh">位置追蹤</span><span class="en">Position-Tracking</span></h4><p><span class="zh">（例如：觸控板、觸控屏、繪圖板）追蹤用戶在表面上指向的特定坐標。</span><span class="en">(e.g., Touchpad, Touchscreen, Graphics Tablet) Tracks the specific coordinates where the user points on the surface.</span></p></div>
+    </div>
+    <h3><span class="zh">顯示器技術：LCD vs. OLED</span><span class="en">Monitor Technology: LCD vs. OLED</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">技術</span><span class="en">Technology</span></th><th><span class="zh">主要特點</span><span class="en">Key Characteristics</span></th><th><span class="zh">最適用場景</span><span class="en">Best For</span></th></tr></thead>
+      <tbody>
+        <tr><td>LCD</td><td><span class="zh">價格較低；採用背光。</span><span class="en">Lower price point; utilizes a backlight.</span></td><td><span class="zh">一般桌面使用。</span><span class="en">General desktop use.</span></td></tr>
+        <tr><td>OLED</td><td><span class="zh">更高對比度、更廣視角、更一致亮度；同尺寸下重量更輕。</span><span class="en">Higher contrast ratio, wider viewing angles, higher brightness consistency; lighter for a given screen size.</span></td><td><span class="zh">可攜式平板電腦的卓越選擇。</span><span class="en">Superior choice for portable tablets.</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="so-what">
+      <strong><span class="zh">所以又點？——自動輸入設備</span><span class="en">So What? — Automatic Input Devices</span></strong>
+      <span class="zh">感應器、條碼掃描器及光學標記閱讀器（OMR）能以最少人手投入錄入數據。在商業環境中（例如：圖書館借還系統），這<strong>大幅減少人為錯誤</strong>並提高效率。</span>
+      <span class="en">Sensors, Barcode Scanners, and OMR allow for data input with minimal human effort. In commercial contexts (e.g., library circulation), this <strong>drastically reduces human error</strong> and increases throughput/efficiency.</span>
+    </div>
+  </section>
+
+  <!-- SECTION 14 -->
+  <section id="s14">
+    <div class="section-header">
+      <span class="section-num">14</span>
+      <h2><span class="zh">系統軟件：作業系統與實用程式基礎架構</span><span class="en">System Software: The OS and Utility Infrastructure</span></h2>
+    </div>
+    <h3><span class="zh">作業系統的七項核心功能</span><span class="en">Seven Core Functions of an Operating System</span></h3>
+    <ol class="steps">
+      <li><span class="zh"><strong>進程管理：</strong>協調 CPU 任務、多工作業及排程/分時共享。</span><span class="en"><strong>Process Management:</strong> Coordinating CPU tasks, multitasking, and scheduling/timesharing.</span></li>
+      <li><span class="zh"><strong>記憶體管理：</strong>為活躍程式分配 RAM。</span><span class="en"><strong>Memory Management:</strong> Allocating RAM to active programs.</span></li>
+      <li><span class="zh"><strong>周邊設備管理：</strong>透過驅動程式協調輸入/輸出。</span><span class="en"><strong>Peripheral Management:</strong> Coordinating I/O via drivers.</span></li>
+      <li><span class="zh"><strong>檔案管理：</strong>將數據組織成資料夾/檔案。</span><span class="en"><strong>File Management:</strong> Organizing data into folders/files.</span></li>
+      <li><span class="zh"><strong>磁碟管理：</strong>處理儲存空間及格式化。</span><span class="en"><strong>Disk Management:</strong> Handling storage space and formatting.</span></li>
+      <li><span class="zh"><strong>用戶介面：</strong>提供圖形用戶介面（GUI）或命令行介面（CLI）。</span><span class="en"><strong>User Interface:</strong> Providing the GUI or CLI.</span></li>
+      <li><span class="zh"><strong>用戶管理：</strong>處理身份驗證及存取權限。</span><span class="en"><strong>User Management:</strong> Handling authentication and access rights.</span></li>
+    </ol>
+    <div class="so-what">
+      <strong><span class="zh">所以又點？——GUI vs. CLI</span><span class="en">So What? — GUI vs. CLI</span></strong>
+      <span class="zh"><strong>圖形用戶介面（GUI）</strong>對用戶直覺（更好的手眼協調），而<strong>命令行介面（CLI）</strong>資源效率更高，專業管理員執行複雜指令時速度更快。</span>
+      <span class="en"><strong>GUI</strong> is intuitive for users (better hand-eye coordination), whereas <strong>CLI</strong> is resource-efficient and faster for expert administrators to execute complex commands.</span>
+    </div>
+  </section>
+
+  <!-- SECTION 15 -->
+  <section id="s15">
+    <div class="section-header">
+      <span class="section-num">15</span>
+      <h2><span class="zh">運作模式與新興趨勢</span><span class="en">Modes of Operation and Emerging Trends</span></h2>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">模式</span><span class="en">Mode</span></th><th><span class="zh">描述</span><span class="en">Description</span></th><th><span class="zh">示例</span><span class="en">Example</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">批量處理</span><span class="en">Batch Processing</span></td><td><span class="zh">數據定期收集並批量處理。</span><span class="en">Data is collected and processed in a batch at regular intervals.</span></td><td><span class="zh">每月發薪</span><span class="en">Monthly payroll</span></td></tr>
+        <tr><td><span class="zh">實時處理</span><span class="en">Real-time Processing</span></td><td><span class="zh">數據即時處理以提供最新回應。</span><span class="en">Data is processed immediately to provide up-to-date responses.</span></td><td><span class="zh">機票預訂、感應器警報</span><span class="en">Flight booking, sensor alerts</span></td></tr>
+        <tr><td><span class="zh">並行處理</span><span class="en">Parallel Processing</span></td><td><span class="zh">多個處理器共用記憶體。</span><span class="en">Multiple processors sharing memory.</span></td><td><span class="zh">高性能運算</span><span class="en">High-performance computing</span></td></tr>
+        <tr><td><span class="zh">分散式處理</span><span class="en">Distributed Processing</span></td><td><span class="zh">多台聯網電腦協作完成一項任務。</span><span class="en">Multiple networked computers working on one task.</span></td><td><span class="zh">雲端渲染農場</span><span class="en">Cloud render farms</span></td></tr>
+        <tr><td><span class="zh">虛擬化</span><span class="en">Virtualization</span></td><td><span class="zh">將物理硬件劃分為多個虛擬部分以最大化資源使用。</span><span class="en">Dividing physical hardware into multiple virtual portions to maximize resource use.</span></td><td><span class="zh">虛擬機器</span><span class="en">Virtual machines</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="so-what">
+      <strong><span class="zh">所以又點？——雲端運算與大數據</span><span class="en">So What? — Cloud Computing &amp; Big Data</span></strong>
+      <span class="zh"><strong>大數據</strong>以高容量（Volume）、高速度（Velocity）及多樣性（Variety）為特徵。傳統試算表的儲存格有限且載入時間長，但與<strong>雲端運算</strong>整合後，可借助遠端處理能力應對大數據。</span>
+      <span class="en"><strong>Big Data</strong> is characterized by High Volume, Velocity, and Variety. Traditional spreadsheets have limited cells and long loading times, but integration with <strong>Cloud Computing</strong> allows them to handle big data by leveraging remote processing power.</span>
+    </div>
+  </section>
+
+  <!-- SECTION 16 -->
+  <section id="s16">
+    <div class="section-header">
+      <span class="section-num">16</span>
+      <h2><span class="zh">主任考官綜合：第5**級考試攻略</span><span class="en">Chief Examiner's Synthesis: Level 5★★ Exam Tactics</span></h2>
+    </div>
+    <h3><span class="zh">精確計算——「上載時間」題</span><span class="en">Precision Calculation — The "Upload Time" Question</span></h3>
+    <div class="trap"><strong><span class="zh">⚠ 關鍵規則</span><span class="en">⚠ Key Rule</span></strong><span class="zh">檔案大小使用<strong>二進制（1024²）</strong>；頻寬使用<strong>十進制（10⁶）</strong>。</span><span class="en">Use <strong>binary (1024²)</strong> for File Size and <strong>decimal (10⁶)</strong> for Bandwidth.</span></div>
+    <ol class="steps">
+      <li><span class="zh"><strong>換算為位元：</strong> 200 × 5 × 1024 × 1024 × 8 = <strong>8,388,608,000 位元</strong></span><span class="en"><strong>Convert to bits:</strong> 200 × 5 × 1024 × 1024 × 8 = <strong>8,388,608,000 bits</strong></span></li>
+      <li><span class="zh"><strong>換算頻寬：</strong> 100 × 1,000,000 = <strong>100,000,000 bps</strong></span><span class="en"><strong>Convert bandwidth:</strong> 100 × 1,000,000 = <strong>100,000,000 bps</strong></span></li>
+      <li><span class="zh"><strong>結果：</strong> ÷ → <strong>83.9 秒</strong></span><span class="en"><strong>Result:</strong> divide → <strong>83.9 seconds</strong></span></li>
+    </ol>
+    <h3><span class="zh">常見失分點與高分關鍵詞</span><span class="en">Common Pitfalls &amp; High-Scoring Keywords</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">題型</span><span class="en">Question Type</span></th><th><span class="zh">失分寫法（避免）</span><span class="en">Losing Answer</span></th><th><span class="zh">得分寫法（採用）</span><span class="en">Scoring Answer</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">儲存速度比較</span><span class="en">Storage speed comparison</span></td><td><span class="zh">「SSD 比較快」</span><span class="en">"SSD is faster"</span></td><td><span class="zh">「快閃記憶體的數據傳輸速率高於磁性媒體」</span><span class="en">"Flash memory has a higher data transfer rate than magnetic media"</span></td></tr>
+        <tr><td><span class="zh">字長優勢</span><span class="en">Word length advantage</span></td><td><span class="zh">「64位元比較快」</span><span class="en">"64-bit is faster"</span></td><td><span class="zh">「64位元處理器可定址超過4GB限制的更多記憶體」</span><span class="en">"A 64-bit processor allows for addressing more memory beyond the 4GB limit"</span></td></tr>
+        <tr><td><span class="zh">PKI 保密性</span><span class="en">PKI confidentiality</span></td><td><span class="zh">只說「加密」</span><span class="en">Just say "encrypt"</span></td><td><span class="zh">「Eva 以 Paul 的公開密碼匙加密；Paul 以私人密碼匙解密」</span><span class="en">"Eva encrypts with Paul's Public Key; Paul decrypts with Paul's Private Key"</span></td></tr>
+        <tr><td><span class="zh">一次性密碼（OTP）</span><span class="en">One-time Password (OTP)</span></td><td><span class="zh">「密碼是隨機的」</span><span class="en">"The password is random"</span></td><td><span class="zh">「OTP 是隨機生成的，並於驗證後或一段時間後失效」</span><span class="en">"OTP is randomly generated and invalid after authentication or a set time period"</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="so-what">
+      <strong><span class="zh">最終攻略</span><span class="en">Final Tactic</span></strong>
+      <span class="zh">Band 1 考生避免說「比較快」。改用技術性理據——精確用語是第5**級考生的標誌。</span>
+      <span class="en">Band 1 students avoid saying "it's faster." Instead, use technical justification. Precision is the hallmark of a Level 5★★ candidate.</span>
+    </div>
+  </section>
+
+  </div><!-- end .content Core B -->
+
+  <div class="closing">
+    <h3><span class="zh">給 Band 1 考生的寄語</span><span class="en">A Note for the Band 1 Student</span></h3>
+    <p><span class="zh">精通資訊及通訊科技並非靠背誦定義——而是運用邏輯解決現實問題。頻寬計算的精確度、SQL 語句的清晰度、道德評析的深度，以及硬件架構的技術理據，正是第5**級考生的標誌。謹慎執行乾跑、牢記 64 位元的記憶體定址優勢，以主任工程師的策略思維迎戰考試。</span><span class="en">Mastery of ICT is not about memorising definitions — it is about applying logic to solve real-world problems. Precision in your bandwidth calculations, clarity in your SQL, depth in your ethical evaluations, and technical justification in your hardware comparisons are what distinguish a Level 5★★ candidate. Remember the 64-bit memory addressing advantage, and approach the exam with the strategic mindset of a Lead Architect.</span></p>
+    <div class="badge"><span class="zh">加油！你一定得！</span><span class="en">Good Luck — You've Got This</span></div>
+</div>
+
+</div><!-- end #panel-b -->
+
+<!-- ══════════════════════════════════════════
+     CORE C PANEL
+     ══════════════════════════════════════════ -->
+<div class="core-panel" id="panel-c">
+
+  <div class="hero">
+    <div class="hero-tag">
+      <span class="zh">Band 1 特別版 · 必修部分 C</span>
+      <span class="en">Band 1 Special Edition · Core C</span>
+    </div>
+    <h1>
+      <span class="zh">互聯網及其應用<br><span>溫習精研班</span></span>
+      <span class="en">Internet and Its Applications<br><span>Revision Masterclass</span></span>
+    </h1>
+    <p>
+      <span class="zh">超越死記設備清單——掌握網絡架構選擇的策略邏輯，以第5**級精確度迎戰乙部案例研究。</span>
+      <span class="en">Move beyond memorizing hardware lists — master the strategic selection of architecture, and approach Section B case studies with Level 5★★ precision.</span>
+    </p>
+    <div class="priority-grid">
+      <div class="priority-card high">
+        <div class="label"><span class="zh">★ 高頻 / 高分</span><span class="en">★ High Frequency / High Mark</span></div>
+        <div class="topics"><span class="zh">LAN vs. WAN、TCP/IP封包交換、PKI 密碼匙工作流程</span><span class="en">LAN vs. WAN, TCP/IP Packet Switching, PKI Key Workflow</span></div>
+        <div class="focus"><span class="zh">必須解釋功能必要性，而非只識別設備。</span><span class="en">Explain functional necessity, not just identify devices.</span></div>
+      </div>
+      <div class="priority-card med">
+        <div class="label"><span class="zh">★ 技術精確度</span><span class="en">★ Technical Precision</span></div>
+        <div class="topics"><span class="zh">IPv4/IPv6 地址模式、DNS 解析、大數據4V</span><span class="en">IPv4/IPv6 Address Patterns, DNS Resolution, Big Data 4Vs</span></div>
+        <div class="focus"><span class="zh">位元數決定地址數量：2ᵇ 規律必須掌握。</span><span class="en">Bits determine address count: the 2ᵇ pattern rule is essential.</span></div>
+      </div>
+      <div class="priority-card low">
+        <div class="label"><span class="zh">★ 法律條例評析</span><span class="en">★ Legal Framework Evaluation</span></div>
+        <div class="topics"><span class="zh">《個人資料（私隱）條例》、《版權條例》、《盜竊罪條例》</span><span class="en">Personal Data Ordinance, Copyright Ordinance, Theft Ordinance</span></div>
+        <div class="focus"><span class="zh">案例研究必須引用正確條例，並說明適用原因。</span><span class="en">Case studies must cite the correct ordinance with justification.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- SECTION 17 -->
+  <section id="s17">
+    <div class="section-header">
+      <span class="section-num">17</span>
+      <h2><span class="zh">網絡基礎架構與連接策略</span><span class="en">Networking Infrastructure and Connectivity Strategies</span></h2>
+    </div>
+    <p><span class="zh">Band 1 考生的致勝之道，不在於背誦硬件清單，而在於理解如何策略性地選擇架構以最大化組織效率。你必須超越識別設備，進而解釋其功能必要性：為何局域網流量管理需要交換機，而路由器才是跨網絡通訊的閘道。</span><span class="en">Band 1 candidates distinguish themselves not by memorizing hardware lists, but by understanding the strategic selection of architecture. You must move beyond identifying a device to explaining its functional necessity: why a switch is required for local traffic management while a router is the gateway for inter-network communication.</span></p>
+
+    <h3><span class="zh">網絡分類：局域網 vs. 廣域網</span><span class="en">Network Classification: LAN vs. WAN</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">特性</span><span class="en">Feature</span></th><th><span class="zh">局域網（LAN）</span><span class="en">LAN</span></th><th><span class="zh">廣域網（WAN）</span><span class="en">WAN</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">覆蓋範圍</span><span class="en">Coverage</span></td><td><span class="zh">小型（家庭、小型辦公室）</span><span class="en">Small (Home, small office)</span></td><td><span class="zh">大型（地區、國家）</span><span class="en">Large (Districts, countries)</span></td></tr>
+        <tr><td><span class="zh">建設成本</span><span class="en">Setup Cost</span></td><td><span class="zh">低（內部自建）</span><span class="en">Low (Internal ownership)</span></td><td><span class="zh">高（基礎設施要求）</span><span class="en">High (Infrastructure requirements)</span></td></tr>
+        <tr><td><span class="zh">數據傳輸速率</span><span class="en">Data Transfer Rate</span></td><td><span class="zh">高（例如 1 Gbps）</span><span class="en">High (e.g., 1 Gbps)</span></td><td><span class="zh">相對較低</span><span class="en">Relatively Low</span></td></tr>
+        <tr><td><span class="zh">擁有權</span><span class="en">Ownership</span></td><td><span class="zh">私有／內部</span><span class="en">Private / Internal</span></td><td><span class="zh">涉及公共基礎設施／ISP</span><span class="en">Involves Public Infrastructure / ISPs</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="trap"><strong><span class="zh">⚠ 考官警告：ISP 因素</span><span class="en">⚠ Examiner's Warning: The ISP Factor</span></strong><span class="zh">切勿單純依賴地理距離判斷。若公司透過 ISP 提供的租用線路連接街對面的辦公室，仍應分類為<strong>廣域網（WAN）</strong>。</span><span class="en">Do not rely solely on geographical proximity. If a company connects offices across a street via a leased line provided by an <strong>ISP</strong>, it is classified as a <strong>WAN</strong>.</span></div>
+
+    <h3><span class="zh">架構模型：客戶端─伺服器 vs. 對等網絡</span><span class="en">Architectural Models: Client-Server vs. P2P</span></h3>
+    <div class="two-col">
+      <div class="card"><h4><span class="zh">客戶端─伺服器</span><span class="en">Client-Server</span></h4><p><span class="zh">集中式管理。伺服器向客戶端提供特定服務。</span><span class="en">Centralized administration. Servers provide specific services to clients.</span></p><p style="font-size:0.88rem"><span class="zh"><strong>優：</strong>強健保安、易於備份、資源版本一致。<br><strong>缺：</strong>成本高；「單點故障」風險。</span><span class="en"><strong>Pros:</strong> Robust security, easier backup, consistent versions.<br><strong>Cons:</strong> High cost; "Single point of failure."</span></p></div>
+      <div class="card"><h4><span class="zh">對等網絡（P2P）</span><span class="en">Peer-to-Peer (P2P)</span></h4><p><span class="zh">去中心化。設備透過專用軟件直接共享資源。</span><span class="en">Decentralized. Devices share resources directly using dedicated software.</span></p><p style="font-size:0.88rem"><span class="zh"><strong>優：</strong>成本效益高、靈活、易設置。<br><strong>缺：</strong>保安性差；節點越多效能越低。</span><span class="en"><strong>Pros:</strong> Cost-effective, flexible, easy setup.<br><strong>Cons:</strong> Poor security; performance degrades with more peers.</span></p></div>
+    </div>
+
+    <h3><span class="zh">關鍵硬件與互連</span><span class="en">Critical Hardware and Interconnectivity</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">硬件</span><span class="en">Hardware</span></th><th><span class="zh">功能說明</span><span class="en">Function</span></th><th><span class="zh">關鍵技術細節</span><span class="en">Key Technical Detail</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">網絡介面卡（NIC）</span><span class="en">NIC</span></td><td><span class="zh">物理入口點，連接設備至網絡。</span><span class="en">Physical entry point connecting device to network.</span></td><td><span class="zh">每塊 NIC 具有唯一的<strong>48位元 MAC 地址</strong>。</span><span class="en">Each NIC has a unique <strong>48-bit MAC address</strong>.</span></td></tr>
+        <tr><td><span class="zh">交換機（Switch）</span><span class="en">Switch</span></td><td><span class="zh">在局域網層運作，使用 MAC 地址導向特定端口。</span><span class="en">Operates at LAN layer; uses MAC addresses to direct data to specific ports.</span></td><td><span class="zh">使用<strong>數據緩衝（快取）</strong>防止碰撞並提高效率。</span><span class="en">Uses <strong>Data Buffering (caching)</strong> to prevent collisions and improve efficiency.</span></td></tr>
+        <tr><td><span class="zh">路由器（Router）</span><span class="en">Router</span></td><td><span class="zh">連接不同網絡（例如：局域網至互聯網）。</span><span class="en">Connects different networks (e.g., LAN to Internet).</span></td><td><span class="zh">根據<strong>IP 地址</strong>轉發封包。</span><span class="en">Forwards packets based on <strong>IP addresses</strong>.</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- SECTION 18 -->
+  <section id="s18">
+    <div class="section-header">
+      <span class="section-num">18</span>
+      <h2><span class="zh">數據傳輸協議與資訊識別</span><span class="en">Data Transmission Protocols and Information Identification</span></h2>
+    </div>
+    <p><span class="zh">TCP/IP 等標準化協議是「道路交通規則」。在 DSE 中，你必須掌握<strong>封包交換</strong>和<strong>名稱解析</strong>的機制。</span><span class="en">Standardized protocols like TCP/IP are the "rules of the road." For the DSE, you must master the mechanics of <strong>Packet Switching</strong> and <strong>Name Resolution</strong>.</span></p>
+
+    <h3><span class="zh">TCP/IP 傳輸過程</span><span class="en">The TCP/IP Transmission Process</span></h3>
+    <ol class="steps">
+      <li><span class="zh"><strong>數據分割：</strong>數據被分割成<strong>封包</strong>並分配序列號。</span><span class="en"><strong>Data Division:</strong> Data is broken into <strong>packets</strong> and assigned sequence numbers.</span></li>
+      <li><span class="zh"><strong>IP 定址：</strong>來源及目的地 IP 地址被加入封包標頭。</span><span class="en"><strong>IP Addressing:</strong> Source and destination IP addresses are added to headers.</span></li>
+      <li><span class="zh"><strong>路由：</strong>路由器確定最佳路徑；封包可能走不同路線以避免擁塞。</span><span class="en"><strong>Routing:</strong> Routers determine the optimal path; packets may take different routes to avoid congestion.</span></li>
+      <li><span class="zh"><strong>重組：</strong>目的地主機使用序列號重新排列封包並偵測遺失數據。</span><span class="en"><strong>Reassembling:</strong> The destination host uses sequence numbers to reorder packets and detect missing data.</span></li>
+    </ol>
+
+    <h3><span class="zh">IP 定址：IPv4 vs. IPv6</span><span class="en">IP Addressing: IPv4 vs. IPv6</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">版本</span><span class="en">Version</span></th><th><span class="zh">位元數</span><span class="en">Bits</span></th><th><span class="zh">格式示例</span><span class="en">Example</span></th><th><span class="zh">可用地址數</span><span class="en">Addresses</span></th></tr></thead>
+      <tbody>
+        <tr><td>IPv4</td><td>32</td><td><code>202.8.88.24</code></td><td>2³² ≈ 43億</td></tr>
+        <tr><td>IPv6</td><td>128</td><td><span class="zh">十六進制區塊</span><span class="en">Hexadecimal blocks</span></td><td>2¹²⁸（實際上無限）</td></tr>
+      </tbody>
+    </table></div>
+    <div class="so-what"><strong><span class="zh">所以又點？——模式理論</span><span class="en">So What? — Pattern Theory</span></strong><span class="zh">位元數（b）決定可用地址數量（2ᵇ）。IPv6 提供 2¹²⁸ 個模式，有效解決 IPv4 的 2³² 地址短缺問題。</span><span class="en">The number of bits (b) determines the available addresses (2ᵇ). IPv6 provides 2¹²⁸ patterns, effectively solving the scarcity of IPv4's 2³².</span></div>
+
+    <h3><span class="zh">域名系統（DNS）與統一資源定位器（URL）</span><span class="en">Domain Name System (DNS) &amp; URL</span></h3>
+    <p><span class="zh">DNS 執行<strong>名稱解析</strong>，將<strong>完整域名（FQDN）</strong>（例如：<code>www.hkedcity.net</code>）翻譯為 IP 地址。</span><span class="en">DNS performs <strong>Name Resolution</strong>, translating a <strong>Fully Qualified Domain Name (FQDN)</strong> (e.g., <code>www.hkedcity.net</code>) into an IP address.</span></p>
+    <pre><code><span class="str">https://</span><span class="fn">www.example.hk</span><span class="num">:80</span><span class="kw">/index.html</span>
+<span class="cm">協議      主機名稱          端口   路徑 / Protocol  Hostname  Port  Path</span></code></pre>
+
+    <h3><span class="zh">應用層協議：電郵接收</span><span class="en">Application Protocols: Email Retrieval</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">特性</span><span class="en">Feature</span></th><th>POP3</th><th>IMAP</th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">儲存</span><span class="en">Storage</span></td><td><span class="zh">下載至本地設備。</span><span class="en">Downloads to local device.</span></td><td><span class="zh">保留在伺服器上。</span><span class="en">Kept on the server.</span></td></tr>
+        <tr><td><span class="zh">同步</span><span class="en">Sync</span></td><td><span class="zh">更改只保留在本地。</span><span class="en">Changes stay local.</span></td><td><span class="zh">跨所有設備同步。</span><span class="en">Synchronized across all devices.</span></td></tr>
+        <tr><td><span class="zh">互聯網需求</span><span class="en">Internet</span></td><td><span class="zh">僅下載時需要。</span><span class="en">Required for download only.</span></td><td><span class="zh">持續存取時需要。</span><span class="en">Required for ongoing access.</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="trap"><strong><span class="zh">⚠ 常見誤解：POP3 神話</span><span class="en">⚠ Common Pitfall: The POP3 Myth</span></strong><span class="zh">學生常誤以為 POP3 下載後<em>必定</em>從伺服器刪除電郵。POP3 客戶端有「在伺服器上保留副本」的選項，但同步功能仍然有限。</span><span class="en">Students often think POP3 <em>must</em> delete emails from the server after download. POP3 clients have an option to "leave a copy on server," though synchronization remains limited.</span></div>
+  </section>
+
+  <!-- SECTION 19 -->
+  <section id="s19">
+    <div class="section-header">
+      <span class="section-num">19</span>
+      <h2><span class="zh">現代互聯網服務與協作技術</span><span class="en">Modern Internet Services and Collaborative Technologies</span></h2>
+    </div>
+    <p><span class="zh">向「一切皆服務」（SaaS）及<strong>物聯網（IoT）</strong>的轉型定義了現代「智慧城市」。</span><span class="en">The shift toward "Everything-as-a-Service" (SaaS) and the <strong>Internet of Things (IoT)</strong> defines the modern "Smart City."</span></p>
+
+    <h3><span class="zh">大數據與4V</span><span class="en">Big Data and the 4Vs</span></h3>
+    <ol class="steps">
+      <li><span class="zh"><strong>容量（Volume）：</strong>海量數據。</span><span class="en"><strong>Volume:</strong> Massive amounts of data.</span></li>
+      <li><span class="zh"><strong>多樣性（Variety）：</strong>不同格式（文字、圖像、影片）。</span><span class="en"><strong>Variety:</strong> Different formats (text, image, video).</span></li>
+      <li><span class="zh"><strong>速度（Velocity）：</strong>高速的數據生成與處理。</span><span class="en"><strong>Velocity:</strong> High speed of data generation and processing.</span></li>
+      <li><span class="zh"><strong>真實性（Veracity）：</strong>數據的準確性與可信度。</span><span class="en"><strong>Veracity:</strong> The accuracy and trustworthiness of the data.</span></li>
+    </ol>
+
+    <h3><span class="zh">雲端運算協同效應與通訊策略</span><span class="en">Cloud Computing Synergy &amp; Strategic Communication</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">概念</span><span class="en">Concept</span></th><th><span class="zh">說明</span><span class="en">Description</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">軟件即服務（SaaS）</span><span class="en">SaaS</span></td><td><span class="zh">透過瀏覽器存取的集中式託管應用程式。</span><span class="en">Centrally hosted applications accessed via browsers.</span></td></tr>
+        <tr><td><span class="zh">永久授權</span><span class="en">Perpetual License</span></td><td><span class="zh">一次性付款，可無限期離線使用。</span><span class="en">One-off payment for indefinite offline use.</span></td></tr>
+        <tr><td><span class="zh">訂閱模式</span><span class="en">Subscription Model</span></td><td><span class="zh">定期收費，提供頻繁更新及雲端功能。</span><span class="en">Recurring fees, providing frequent updates and cloud-based features.</span></td></tr>
+        <tr><td><span class="zh">密件副本（Bcc）</span><span class="en">Email Bcc</span></td><td><span class="zh">大量郵件使用 Bcc 保護收件人私隱。</span><span class="en">Use Bcc for bulk mail to protect recipient privacy.</span></td></tr>
+        <tr><td><span class="zh">串流媒體</span><span class="en">Streaming</span></td><td><span class="zh">使用<strong>緩衝</strong>（預載數據）及<strong>編解碼器</strong>（壓縮/解壓）。頻寬與解析度直接影響「像素化」程度。</span><span class="en">Uses <strong>Buffering</strong> and <strong>Codecs</strong>. Bandwidth and resolution directly impact "pixelisation."</span></td></tr>
+        <tr><td><span class="zh">進階搜尋</span><span class="en">Advanced Search</span></td><td><code>AND</code>/<code>OR</code>/<code>NOT</code>/<code>""</code>/<code>site:</code></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- SECTION 20 -->
+  <section id="s20">
+    <div class="section-header">
+      <span class="section-num">20</span>
+      <h2><span class="zh">網絡保安、威脅與私隱保護</span><span class="en">Network Security, Threats, and Privacy Protection</span></h2>
+    </div>
+    <h3><span class="zh">惡意軟件與攻擊類型</span><span class="en">Malware and Attacks</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">類型</span><span class="en">Type</span></th><th><span class="zh">定義</span><span class="en">Definition</span></th><th><span class="zh">關鍵特徵</span><span class="en">Key Characteristic</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">病毒</span><span class="en">Virus</span></td><td><span class="zh">需要宿主檔案及人為操作才能傳播。</span><span class="en">Needs a host file and human action to spread.</span></td><td><span class="zh">不能自行複製</span><span class="en">Cannot self-replicate</span></td></tr>
+        <tr><td><span class="zh">蠕蟲</span><span class="en">Worm</span></td><td><span class="zh">自我複製；無需人為操作即可透過網絡傳播。</span><span class="en">Self-replicating; spreads over networks without human action.</span></td><td><span class="zh">自動傳播</span><span class="en">Automatic propagation</span></td></tr>
+        <tr><td><span class="zh">特洛伊木馬</span><span class="en">Trojan</span></td><td><span class="zh">偽裝成合法軟件。</span><span class="en">Disguises as legitimate software.</span></td><td><span class="zh">欺騙性安裝</span><span class="en">Deceptive installation</span></td></tr>
+        <tr><td><span class="zh">勒索軟件</span><span class="en">Ransomware</span></td><td><span class="zh">加密數據並要求支付解密費用。</span><span class="en">Encrypts data and demands payment for the decryption key.</span></td><td><span class="zh">加密勒索</span><span class="en">Encryption extortion</span></td></tr>
+        <tr><td>DoS/DDoS</td><td><span class="zh">使用<strong>殭屍電腦</strong>（殭屍網絡）癱瘓伺服器。</span><span class="en">Paralyzes a server using <strong>Zombie computers</strong> (a botnet).</span></td><td><span class="zh">分散式攻擊</span><span class="en">Distributed attack</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3><span class="zh">縱深防禦</span><span class="en">Defense-in-Depth</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">防禦措施</span><span class="en">Defense</span></th><th><span class="zh">說明</span><span class="en">Description</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">防火牆</span><span class="en">Firewalls</span></td><td><span class="zh"><strong>軟件</strong>（低成本，保護單一設備）vs. <strong>硬件</strong>（高效率，保護整個網絡，成本較高）。</span><span class="en"><strong>Software</strong> (low cost, single device) vs. <strong>Hardware</strong> (efficient, protects network, higher cost).</span></td></tr>
+        <tr><td><span class="zh">存取控制（AAA）</span><span class="en">Access Control (AAA)</span></td><td><span class="zh"><strong>身份驗證</strong>（你是誰？）、<strong>授權</strong>（你能做什麼？）、<strong>會計審計</strong>（你做了什麼？）。</span><span class="en"><strong>Authentication</strong> (Who are you?), <strong>Authorization</strong> (What can you do?), <strong>Accounting</strong> (What did you do?).</span></td></tr>
+        <tr><td><span class="zh">無線網絡保安</span><span class="en">Wireless Security</span></td><td><span class="zh"><strong>WPA2</strong> 是現行標準；<strong>WEP</strong> 已過時。<strong>MAC 地址過濾</strong>建立已批准設備的「白名單」。</span><span class="en"><strong>WPA2</strong> is the standard; <strong>WEP</strong> is obsolete. <strong>MAC Address Filtering</strong> creates a "whitelist" of approved devices.</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3><span class="zh">香港法律框架</span><span class="en">Legal Framework in Hong Kong</span></h3>
+    <ol class="steps">
+      <li><span class="zh"><strong>《個人資料（私隱）條例》：</strong>規管個人資料的收集及使用。</span><span class="en"><strong>Personal Data (Privacy) Ordinance:</strong> Governs the collection and use of personal information.</span></li>
+      <li><span class="zh"><strong>《版權條例》：</strong>保護原創作品並防止盜版。</span><span class="en"><strong>Copyright Ordinance:</strong> Protects original works and prevents piracy.</span></li>
+      <li><span class="zh"><strong>《盜竊罪條例》：</strong>適用於黑客入侵及未經授權存取數據。</span><span class="en"><strong>Theft Ordinance:</strong> Applies to hacking and unauthorized access to data.</span></li>
+    </ol>
+  </section>
+
+  <!-- SECTION 21 -->
+  <section id="s21">
+    <div class="section-header">
+      <span class="section-num">21</span>
+      <h2><span class="zh">密碼學與公開密碼匙基礎建設（PKI）</span><span class="en">Cryptography and Public Key Infrastructure (PKI)</span></h2>
+    </div>
+    <p><span class="zh">PKI 是安全交易的「黃金標準」。在乙部中，對「哪個密碼匙做什麼」的精確掌握，是第4級與第5級的分水嶺。</span><span class="en">PKI is the "Gold Standard" for secure transactions. In Section B, precision in "which key does what" is the difference between a Level 4 and a Level 5.</span></p>
+
+    <h3><span class="zh">加密模式</span><span class="en">Encryption Paradigms</span></h3>
+    <div class="two-col">
+      <div class="card"><h4><span class="zh">對稱加密</span><span class="en">Symmetric Encryption</span></h4><p><span class="zh">加密及解密使用相同密碼匙。<br><strong>問題：密碼匙分發</strong>——如何安全地共享密碼匙？</span><span class="en">Same key for both encryption and decryption.<br><strong>Problem: Key Distribution</strong> — how to share the key securely?</span></p></div>
+      <div class="card"><h4><span class="zh">非對稱加密（PKI）</span><span class="en">Asymmetric Encryption (PKI)</span></h4><p><span class="zh">使用一對密碼匙（公開及私人）。公開密碼匙可自由分享，解決了分發問題。</span><span class="en">Uses a Key Pair (Public and Private). The public key can be freely shared, solving the distribution problem.</span></p></div>
+    </div>
+
+    <h3><span class="zh">PKI 工作流程</span><span class="en">The PKI Workflow</span></h3>
+    <div class="two-col">
+      <div class="card"><h4><span class="zh">保密性</span><span class="en">Confidentiality</span></h4><p><span class="zh">發件人以<strong>收件人的公開密碼匙</strong>加密。只有收件人能以其<strong>私人密碼匙</strong>解密。</span><span class="en">Sender encrypts with <strong>Recipient's Public Key</strong>. Only recipient decrypts with their <strong>Private Key</strong>.</span></p><div class="so-what" style="margin-top:0.5rem"><strong><span class="zh">所以又點？</span><span class="en">So What?</span></strong><span class="zh">即使截獲，訊息對任何人（除收件人外）均無法讀取。</span><span class="en">Even if intercepted, the message is unreadable to anyone but the recipient.</span></div></div>
+      <div class="card"><h4><span class="zh">身份驗證（數碼簽署）</span><span class="en">Authentication (Digital Signature)</span></h4><p><span class="zh">發件人以<strong>自己的私人密碼匙</strong>「簽署」。收件人以<strong>發件人的公開密碼匙</strong>核實。確保<strong>不可否認性</strong>。</span><span class="en">Sender "signs" with their <strong>Private Key</strong>. Recipient verifies with <strong>Sender's Public Key</strong>. Ensures <strong>Non-repudiation</strong>.</span></p><div class="so-what" style="margin-top:0.5rem"><strong><span class="zh">所以又點？</span><span class="en">So What?</span></strong><span class="zh">這是具法律效力的真實性加密證明，有別於普通電子簽署。</span><span class="en">This is a legally binding cryptographic proof — distinct from a mere Electronic Signature.</span></div></div>
+    </div>
+
+    <h3><span class="zh">多重要素身份驗證（MFA）</span><span class="en">Multi-Factor Authentication (MFA)</span></h3>
+    <ol class="steps">
+      <li><span class="zh"><strong>你知道的（KNOW）：</strong>密碼、個人識別號碼（PIN）。</span><span class="en"><strong>Something you KNOW:</strong> Password, PIN.</span></li>
+      <li><span class="zh"><strong>你持有的（HOLD）：</strong>令牌、短訊一次性密碼（OTP）、智能卡。</span><span class="en"><strong>Something you HOLD:</strong> Token, SMS OTP, Smart Card.</span></li>
+      <li><span class="zh"><strong>你本身（ARE）：</strong>生物特徵識別（指紋、面部掃描）。</span><span class="en"><strong>Something you ARE:</strong> Biometrics (Fingerprint, Facial scan).</span></li>
+    </ol>
+  </section>
+
+  <!-- SECTION 22 -->
+  <section id="s22">
+    <div class="section-header">
+      <span class="section-num">22</span>
+      <h2><span class="zh">附錄：網頁製作基礎（HTML/CSS）</span><span class="en">Appendix: Essential Web Authoring (HTML/CSS)</span></h2>
+    </div>
+    <h3><span class="zh">數據層次結構</span><span class="en">Data Hierarchy</span></h3>
+    <div class="flow">
+      <div class="flow-item"><span class="flow-num"></span><span class="zh">位元</span><span class="en">Bit</span></div>
+      <div class="flow-item"><span class="flow-num"></span><span class="zh">字節</span><span class="en">Byte</span></div>
+      <div class="flow-item"><span class="flow-num"></span><span class="zh">欄位</span><span class="en">Field</span></div>
+      <div class="flow-item"><span class="flow-num"></span><span class="zh">記錄</span><span class="en">Record</span></div>
+      <div class="flow-item highlight"><span class="flow-num"></span><span class="zh">檔案（表格）</span><span class="en">File (Table)</span></div>
+      <div class="flow-item highlight"><span class="flow-num"></span><span class="zh">數據庫</span><span class="en">Database</span></div>
+    </div>
+
+    <h3><span class="zh">HTML 結構與標籤</span><span class="en">HTML Structure and Tags</span></h3>
+    <pre><code><span class="kw">&lt;!DOCTYPE html&gt;</span>
+<span class="kw">&lt;html&gt;</span>
+  <span class="kw">&lt;head&gt;&lt;title&gt;</span><span class="str">DSE Revision</span><span class="kw">&lt;/title&gt;&lt;/head&gt;</span>
+  <span class="kw">&lt;body&gt;</span>
+    <span class="kw">&lt;h1&gt;</span>Networking<span class="kw">&lt;/h1&gt;</span>
+    <span class="kw">&lt;a</span> <span class="fn">href</span>=<span class="str">"page2.html"</span><span class="kw">&gt;</span>Next Page<span class="kw">&lt;/a&gt;</span>
+    <span class="kw">&lt;img</span> <span class="fn">src</span>=<span class="str">"topo.jpg"</span> <span class="fn">alt</span>=<span class="str">"Network Topology Diagram"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;table&gt;</span>
+      <span class="kw">&lt;tr&gt;&lt;th&gt;</span>Device<span class="kw">&lt;/th&gt;&lt;th&gt;</span>Function<span class="kw">&lt;/th&gt;&lt;/tr&gt;</span>
+      <span class="kw">&lt;tr&gt;&lt;td&gt;</span>Router<span class="kw">&lt;/td&gt;&lt;td&gt;</span>Routing<span class="kw">&lt;/td&gt;&lt;/tr&gt;</span>
+    <span class="kw">&lt;/table&gt;</span>
+  <span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
+
+    <h3><span class="zh">網頁無障礙設計</span><span class="en">Web Accessibility &amp; Design</span></h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th><span class="zh">要求</span><span class="en">Requirement</span></th><th><span class="zh">說明</span><span class="en">Description</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zh">替代文字（<code>alt</code>）</span><span class="en">Alt Text (<code>alt</code>)</span></td><td><span class="zh">為視障用戶的螢幕閱讀器提供圖像描述。</span><span class="en">Provides descriptions for the visually impaired using screen readers.</span></td></tr>
+        <tr><td><span class="zh">可調整字體</span><span class="en">Adjustable Fonts</span></td><td><span class="zh">允許用戶增大文字大小以提高可讀性。</span><span class="en">Allows users to increase text size for readability.</span></td></tr>
+        <tr><td><span class="zh">高對比度</span><span class="en">High Contrast</span></td><td><span class="zh">採用鮮明色彩方案，提高能見度。</span><span class="en">Versions with distinct color schemes for better visibility.</span></td></tr>
+        <tr><td><span class="zh">多語言內容</span><span class="en">Multi-language Content</span></td><td><span class="zh">照顧不同語言背景的人口群體。</span><span class="en">Catering to diverse demographic groups.</span></td></tr>
+        <tr><td><span class="zh">跨平台設計</span><span class="en">Cross-platform Design</span></td><td><span class="zh">確保網站在桌面及流動設備上均能正常運作（響應式設計）。</span><span class="en">Ensuring the site functions on both desktops and mobile devices (Responsive design).</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  </div><!-- end .content Core C -->
+
+  <div class="closing">
+    <h3><span class="zh">給 Band 1 考生的寄語</span><span class="en">A Note for the Band 1 Student</span></h3>
+    <p><span class="zh">掌握必修部分 C 的關鍵，在於理解網絡設備選擇背後的功能邏輯，而非死記清單。精確引用 PKI 密碼匙工作流程、正確識別香港法律條例，以及在案例研究中提供有力理由，正是第5**級考生的標誌。</span><span class="en">The key to mastering Core C lies in understanding the functional logic behind network device selection, not memorizing lists. Precise PKI key workflow citation, correct identification of Hong Kong Ordinances, and strong justifications in case studies are the hallmarks of a Level 5★★ candidate.</span></p>
+    <div class="badge"><span class="zh">加油！你一定得！</span><span class="en">Good Luck — You've Got This</span></div>
+  </div>
+
+</div><!-- end #panel-c -->
+
+<script>
+  let currentLang = 'zh';
+
+  // ── Core switcher
+  function setCore(core) {
+    ['a','b','c'].forEach(x => {
+      document.getElementById('panel-' + x).classList.toggle('active', core === x);
+      document.getElementById('tab-' + x).classList.toggle('active', core === x);
+      document.body.classList.toggle('core-' + x, core === x);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(revealVisible, 100);
+  }
+
+  // ── Language switcher
+  function setLang(lang) {
+    currentLang = lang;
+    document.body.classList.toggle('show-en', lang === 'en');
+    document.documentElement.lang = lang === 'en' ? 'en' : 'zh-Hant';
+    document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  }
+
+  // ── Scroll reveal
+  function revealVisible() {
+    document.querySelectorAll('.core-panel.active section').forEach(s => {
+      if (s.getBoundingClientRect().top < window.innerHeight * 0.92) s.classList.add('visible');
+    });
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+
+  document.querySelectorAll('section').forEach(s => obs.observe(s));
+  revealVisible();
+</script>
+</body>
+</html>
